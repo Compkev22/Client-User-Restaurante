@@ -7,25 +7,23 @@ import {
     Bars3Icon,
     XMarkIcon,
     ShoppingCartIcon,
-    UserCircleIcon,
 } from '@heroicons/react/24/outline';
-import { useAuthStore } from '../../../features/auth/store/authStore.js';
-import { useCartStore } from '../../../features/cart/store/cartStore.js';
+import { useClientStore } from '../../../features/auth/store/clientStore.js';
 import { getInitials } from '../../utils/formatters.js';
 
 const NAV_LINKS = [
-    { label: 'INICIO',    path: '/portal' },
-    { label: 'MENÚ',      path: '/portal/menu' },
-    { label: 'RESERVAS',  path: '/portal/reservas' },
-    { label: 'EVENTOS',   path: '/portal/eventos' },
-    { label: 'RESEÑAS',   path: '/portal/resenas' },
+    { label: 'INICIO',   path: '/portal' },
+    { label: 'MENÚ',     path: '/portal/menu' },
+    { label: 'RESERVAS', path: '/portal/reservas' },
+    { label: 'EVENTOS',  path: '/portal/eventos' },
+    { label: 'RESEÑAS',  path: '/portal/resenas' },
 ];
 
 export const ClientNavbar = () => {
-    const navigate    = useNavigate();
-    const location    = useLocation();
-    const { user }    = useAuthStore();
-    const itemCount   = useCartStore((s) => s.getItemCount());
+    const navigate  = useNavigate();
+    const location  = useLocation();
+    const user      = useClientStore((s) => s.user);
+    const cartCount = useClientStore((s) => s.getCartCount());
 
     const [mobileOpen,  setMobileOpen]  = useState(false);
     const [searchOpen,  setSearchOpen]  = useState(false);
@@ -119,9 +117,9 @@ export const ClientNavbar = () => {
                             className="relative p-2 text-[#e11d48] hover:bg-red-50 rounded-lg transition-colors"
                         >
                             <ShoppingCartIcon className="w-6 h-6" />
-                            {itemCount > 0 && (
+                            {cartCount > 0 && (
                                 <span className="absolute -top-1 -right-1 bg-[#e11d48] text-white text-[10px] font-black w-5 h-5 flex items-center justify-center rounded-full border-2 border-white">
-                                    {itemCount > 99 ? '99+' : itemCount}
+                                    {cartCount > 99 ? '99+' : cartCount}
                                 </span>
                             )}
                         </button>
