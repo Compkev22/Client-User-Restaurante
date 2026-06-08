@@ -1,0 +1,81 @@
+@import "tailwindcss";
+
+/* ==============================
+   VARIABLES DE COLOR KINAL
+   ============================== */
+:root {
+    --color-primary: #e11d48;
+    --color-primary-hover: #be123c;
+    --color-secondary: #fb923c;
+    --color-accent: #facc15;
+    --color-bg: #fdfaf5;
+    --color-bg-dark: #2d1810;
+    --color-text-dark: #7f1d1d;
+    --color-border: #f3e8d0;
+}
+
+/* ==============================
+   RESET Y BASE
+   ============================== */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
+html {
+    scroll-behavior: smooth;
+}
+
+body {
+    margin: 0;
+    font-family: -apple-system, BlinkMacSystemFont, 'Segoe UI', Roboto,
+        Oxygen, Ubuntu, Cantarell, sans-serif;
+    background-color: var(--color-bg);
+    color: #1f2937;
+    -webkit-font-smoothing: antialiased;
+}
+
+/* ==============================
+   ANIMACIONES GLOBALES
+   ============================== */
+@keyframes fadeIn {
+    from { opacity: 0; transform: translateY(8px); }
+    to   { opacity: 1; transform: translateY(0); }
+}
+
+@keyframes slideIn {
+    from { opacity: 0; transform: translateX(-16px); }
+    to   { opacity: 1; transform: translateX(0); }
+}
+
+@keyframes pulse-soft {
+    0%, 100% { opacity: 1; }
+    50%       { opacity: 0.6; }
+}
+
+.animate-fadeIn    { animation: fadeIn 0.3s ease-out; }
+.animate-slideIn   { animation: slideIn 0.3s ease-out; }
+.animate-pulse-soft { animation: pulse-soft 2s ease-in-out infinite; }
+
+/* ==============================
+   SCROLLBAR PERSONALIZADO
+   ============================== */
+::-webkit-scrollbar { width: 6px; height: 6px; }
+::-webkit-scrollbar-track { background: #f1f1f1; }
+::-webkit-scrollbar-thumb { background: #e11d48; border-radius: 3px; }
+::-webkit-scrollbar-thumb:hover { background: #be123c; }
+
+/* ==============================
+   CLASE UTILITARIA: LINE-CLAMP
+   ============================== */
+.line-clamp-2 {
+    display: -webkit-box;
+    -webkit-line-clamp: 2;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
+.line-clamp-3 {
+    display: -webkit-box;
+    -webkit-line-clamp: 3;
+    -webkit-box-orient: vertical;
+    overflow: hidden;
+}
