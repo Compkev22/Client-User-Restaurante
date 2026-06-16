@@ -2,13 +2,13 @@
 
 import { useForm } from 'react-hook-form';
 import { useNavigate } from 'react-router-dom';
-import { useClientStore } from '../store/clientStore.js';
+import { useAuthStore } from '../store/authStore.js';
 import { Spinner } from '../../../shared/ui/Spinner.jsx';
 
 export const LoginForm = ({ onRegister, onForgot }) => {
-    const navigate     = useNavigate();
-    const login        = useClientStore((s) => s.login);
-    const authLoading  = useClientStore((s) => s.authLoading);
+    const navigate = useNavigate();
+    const login    = useAuthStore((s) => s.login);
+    const loading  = useAuthStore((s) => s.loading);
 
     const { register, handleSubmit, formState: { errors } } = useForm();
 
@@ -63,11 +63,11 @@ export const LoginForm = ({ onRegister, onForgot }) => {
 
             <button
                 type="submit"
-                disabled={authLoading}
+                disabled={loading}
                 className="w-full bg-[#e11d48] hover:bg-red-700 disabled:opacity-60 text-white font-black py-3 rounded-xl text-sm shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2 mt-2"
             >
-                {authLoading && <Spinner size="sm" color="text-white" />}
-                {authLoading ? 'Ingresando...' : 'INGRESAR A COMER'}
+                {loading && <Spinner size="sm" color="text-white" />}
+                {loading ? 'Ingresando...' : 'INGRESAR A COMER'}
             </button>
 
             <div className="text-center pt-1">

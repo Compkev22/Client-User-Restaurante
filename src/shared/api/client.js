@@ -2,128 +2,69 @@
 
 import { axiosClient } from './api.js';
 
-// ─────────────────────────────────────────────
-// USUARIOS
-// ─────────────────────────────────────────────
-export const getProfileRequest = () =>
-    axiosClient.get('/users/profile');
+// ================= SYNC PERFIL (Mongo, vinculado por authId) =================
+export const syncProfile = async (data) => await axiosClient.post('/users/sync', data);
 
-export const updateProfileRequest = (id, data) =>
-    axiosClient.put(`/users/${id}`, data);
+// ================= MENÚ (SOLO LECTURA) =================
+export const getMenu = async () => await axiosClient.get('/menu');
 
-// ─────────────────────────────────────────────
-// MENÚ
-// ─────────────────────────────────────────────
-export const getMenuRequest = () =>
-    axiosClient.get('/menu');
+// ================= PRODUCTOS =================
+export const getProducts = async (params) => await axiosClient.get('/products', { params });
 
-// ─────────────────────────────────────────────
-// PRODUCTOS
-// ─────────────────────────────────────────────
-export const getProductsRequest = (params) =>
-    axiosClient.get('/products', { params });
+// ================= COMBOS =================
+export const getCombos = async (params) => await axiosClient.get('/combos', { params });
+export const getComboById = async (id) => await axiosClient.get(`/combos/${id}`);
 
-// ─────────────────────────────────────────────
-// COMBOS
-// ─────────────────────────────────────────────
-export const getCombosRequest = (params) =>
-    axiosClient.get('/combos', { params });
+// ================= SUCURSALES =================
+export const getBranches = async (params) => await axiosClient.get('/branches', { params });
 
-export const getComboByIdRequest = (id) =>
-    axiosClient.get(`/combos/${id}`);
+// ================= MESAS =================
+export const getTables = async (params) => await axiosClient.get('/tables', { params });
 
-// ─────────────────────────────────────────────
-// SUCURSALES
-// ─────────────────────────────────────────────
-export const getBranchesRequest = () =>
-    axiosClient.get('/branches');
+// ================= SERVICIOS ADICIONALES =================
+export const getAdditionalServices = async () => await axiosClient.get('/AS');
 
-// ─────────────────────────────────────────────
-// ORDER REQUESTS (pedidos del cliente)
-// ─────────────────────────────────────────────
-export const createOrderRequestApi = (data) =>
-    axiosClient.post('/orderRequests', data);
+// ================= CUPONES =================
+export const getCoupons = async () => await axiosClient.get('/coupons');
+export const getCouponById = async (id) => await axiosClient.get(`/coupons/${id}`);
+export const getCouponByCode = async (code) => await axiosClient.get(`/coupons/code/${code}`);
+export const createCoupon = async (data) => await axiosClient.post('/coupons', data);
+export const updateCoupon = async (id, data) => await axiosClient.put(`/coupons/${id}`, data);
+export const deleteCoupon = async (id) => await axiosClient.patch(`/coupons/${id}/status`);
 
-export const getMyOrderRequestsApi = () =>
-    axiosClient.get('/orderRequests/mine');
+// ================= ORDER REQUESTS (PEDIDOS DEL CLIENTE) =================
+export const createOrderRequest = async (data) => await axiosClient.post('/orderRequests', data);
+export const getMyOrderRequests = async () => await axiosClient.get('/orderRequests/mine');
+export const cancelOrderRequest = async (id) => await axiosClient.put(`/orderRequests/cancel/${id}`);
 
-export const cancelOrderRequestApi = (id) =>
-    axiosClient.put(`/orderRequests/cancel/${id}`);
+// ================= ÓRDENES =================
+export const getOrders = async (params) => await axiosClient.get('/orders', { params });
+export const getOrderById = async (id) => await axiosClient.get(`/orders/${id}`);
 
-// ─────────────────────────────────────────────
-// ÓRDENES
-// ─────────────────────────────────────────────
-export const getMyOrdersRequest = () =>
-    axiosClient.get('/orders');
+// ================= DETALLES DE ORDEN =================
+export const getOrderDetailsByOrder = async (orderId) => await axiosClient.get(`/orderDetails/order/${orderId}`);
 
-export const getOrderByIdRequest = (id) =>
-    axiosClient.get(`/orders/${id}`);
+// ================= RESERVACIONES =================
+export const getReservations = async (params) => await axiosClient.get('/reservations', { params });
+export const createReservation = async (data) => await axiosClient.post('/reservations', data);
+export const updateReservation = async (id, data) => await axiosClient.put(`/reservations/${id}`, data);
+export const deleteReservation = async (id) => await axiosClient.delete(`/reservations/${id}`);
 
-// ─────────────────────────────────────────────
-// DETALLES DE ORDEN
-// ─────────────────────────────────────────────
-export const getOrderDetailsByOrderRequest = (orderId) =>
-    axiosClient.get(`/orderDetails/order/${orderId}`);
+// ================= EVENTOS =================
+export const getEvents = async () => await axiosClient.get('/events');
+export const getEventById = async (id) => await axiosClient.get(`/events/${id}`);
+export const createEvent = async (data) => await axiosClient.post('/events', data);
 
-// ─────────────────────────────────────────────
-// RESERVACIONES
-// ─────────────────────────────────────────────
-export const getReservationsRequest = () =>
-    axiosClient.get('/reservations');
+// ================= RESEÑAS =================
+export const getMyReviews = async () => await axiosClient.get('/reviews/mine');
+export const createReview = async (data) => await axiosClient.post('/reviews', data);
+export const updateReview = async (id, data) => await axiosClient.put(`/reviews/${id}`, data);
+export const deleteReview = async (id) => await axiosClient.patch(`/reviews/${id}/status`);
 
-export const createReservationRequest = (data) =>
-    axiosClient.post('/reservations', data);
+// ================= FACTURACIÓN =================
+export const getBillings = async () => await axiosClient.get('/billings');
+export const getBillingById = async (id) => await axiosClient.get(`/billings/${id}`);
 
-export const updateReservationRequest = (id, data) =>
-    axiosClient.put(`/reservations/${id}`, data);
-
-export const cancelReservationRequest = (id) =>
-    axiosClient.delete(`/reservations/${id}`);
-
-// ─────────────────────────────────────────────
-// EVENTOS
-// ─────────────────────────────────────────────
-export const getEventsRequest = () =>
-    axiosClient.get('/events');
-
-export const getEventByIdRequest = (id) =>
-    axiosClient.get(`/events/${id}`);
-
-export const createEventRequest = (data) =>
-    axiosClient.post('/events', data);
-
-// ─────────────────────────────────────────────
-// RESEÑAS
-// ─────────────────────────────────────────────
-export const createReviewRequest = (data) =>
-    axiosClient.post('/reviews', data);
-
-export const getMyReviewsRequest = () =>
-    axiosClient.get('/reviews/mine');
-
-export const updateReviewRequest = (id, data) =>
-    axiosClient.put(`/reviews/${id}`, data);
-
-export const deleteReviewRequest = (id) =>
-    axiosClient.patch(`/reviews/${id}/status`);
-
-// ─────────────────────────────────────────────
-// FACTURACIÓN
-// ─────────────────────────────────────────────
-export const getMyBillingsRequest = () =>
-    axiosClient.get('/billings');
-
-export const getBillingByIdRequest = (id) =>
-    axiosClient.get(`/billings/${id}`);
-
-// ─────────────────────────────────────────────
-// SERVICIOS ADICIONALES
-// ─────────────────────────────────────────────
-export const getAdditionalServicesRequest = () =>
-    axiosClient.get('/AS');
-
-// ─────────────────────────────────────────────
-// MESAS
-// ─────────────────────────────────────────────
-export const getTablesRequest = (params) =>
-    axiosClient.get('/tables', { params });
+// ================= PERFIL (USUARIOS) =================
+export const getProfile = async () => await axiosClient.get('/users/profile');
+export const updateProfile = async (id, data) => await axiosClient.put(`/users/${id}`, data);

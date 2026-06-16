@@ -1,17 +1,17 @@
 'use strict';
 
 import { useNavigate } from 'react-router-dom';
-import { useClientStore } from '../../auth/store/clientStore.js';
+import { useCartStore } from '../../auth/store/clientStore.js';
 import { formatCurrency } from '../../../shared/utils/formatters.js';
 import { EmptyState } from '../../../shared/ui/EmptyState.jsx';
 
 export const CartView = () => {
     const navigate = useNavigate();
-    const cart               = useClientStore((s) => s.cart);
-    const removeFromCart     = useClientStore((s) => s.removeFromCart);
-    const updateCartQuantity = useClientStore((s) => s.updateCartQuantity);
-    const clearCart          = useClientStore((s) => s.clearCart);
-    const getCartTotal       = useClientStore((s) => s.getCartTotal);
+    const cart               = useCartStore((s) => s.cart);
+    const removeFromCart     = useCartStore((s) => s.removeFromCart);
+    const updateCartQuantity = useCartStore((s) => s.updateCartQuantity);
+    const clearCart          = useCartStore((s) => s.clearCart);
+    const getCartTotal       = useCartStore((s) => s.getCartTotal);
 
     if (cart.length === 0) {
         return (

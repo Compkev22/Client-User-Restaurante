@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { registerRequest } from '../../../shared/api/index.js';
+import { register as registerUser } from '../../../shared/api/index.js';
 import { showSuccess, showError } from '../../../shared/utils/toast.js';
 import { Spinner } from '../../../shared/ui/Spinner.jsx';
 
@@ -14,11 +14,13 @@ export const RegisterForm = ({ onLogin }) => {
     const onSubmit = async (data) => {
         setLoading(true);
         try {
-            await registerRequest({
+            await registerUser({
                 UserName:    data.UserName,
                 UserSurname: data.UserSurname,
+                Username:    data.Username,
                 UserEmail:   data.UserEmail,
                 password:    data.password,
+                phone:       data.phone,
             });
             showSuccess('¡Cuenta creada! Revisa tu correo para verificarla.');
             onLogin();
@@ -52,6 +54,13 @@ export const RegisterForm = ({ onLogin }) => {
             </div>
 
             <div>
+                <label className="block text-xs font-bold text-[#a16207] uppercase mb-1">Nombre de usuario</label>
+                <input className={inputClass(errors.Username)} placeholder="ana.garcia"
+                    {...register('Username', { required: 'Requerido' })} />
+                {errors.Username && <p className="text-red-500 text-xs mt-1">{errors.Username.message}</p>}
+            </div>
+
+            <div>
                 <label className="block text-xs font-bold text-[#a16207] uppercase mb-1">Correo</label>
                 <input type="email" className={inputClass(errors.UserEmail)} placeholder="tu@correo.com"
                     {...register('UserEmail', {
@@ -59,6 +68,16 @@ export const RegisterForm = ({ onLogin }) => {
                         pattern: { value: /^\S+@\S+\.\S+$/, message: 'Correo inválido' },
                     })} />
                 {errors.UserEmail && <p className="text-red-500 text-xs mt-1">{errors.UserEmail.message}</p>}
+            </div>
+
+            <div>
+                <label className="block text-xs font-bold text-[#a16207] uppercase mb-1">Teléfono</label>
+                <input className={inputClass(errors.phone)} placeholder="12345678" maxLength={8}
+                    {...register('phone', {
+                        required: 'El teléfono es requerido',
+                        pattern: { value: /^[0-9]{8}$/, message: 'Debe tener 8 dígitos' },
+                    })} />
+                {errors.phone && <p className="text-red-500 text-xs mt-1">{errors.phone.message}</p>}
             </div>
 
             <div>

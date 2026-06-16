@@ -8,7 +8,8 @@ import {
     XMarkIcon,
     ShoppingCartIcon,
 } from '@heroicons/react/24/outline';
-import { useClientStore } from '../../../features/auth/store/clientStore.js';
+import { useAuthStore } from '../../../features/auth/store/authStore.js';
+import { useCartStore } from '../../../features/auth/store/clientStore.js';
 import { getInitials } from '../../utils/formatters.js';
 
 const NAV_LINKS = [
@@ -22,8 +23,8 @@ const NAV_LINKS = [
 export const ClientNavbar = () => {
     const navigate  = useNavigate();
     const location  = useLocation();
-    const user      = useClientStore((s) => s.user);
-    const cartCount = useClientStore((s) => s.getCartCount());
+    const user      = useAuthStore((s) => s.user);
+    const cartCount = useCartStore((s) => s.getCartCount());
 
     const [mobileOpen,  setMobileOpen]  = useState(false);
     const [searchOpen,  setSearchOpen]  = useState(false);

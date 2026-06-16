@@ -1,13 +1,26 @@
 'use strict';
 
+import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { showInfo } from '../../../shared/utils/toast.js';
+import { forgotPassword } from '../../../shared/api/index.js';
+import { showSuccess, showError } from '../../../shared/utils/toast.js';
+import { Spinner } from '../../../shared/ui/Spinner.jsx';
 
 export const ForgotForm = ({ onBack }) => {
+    const [loading, setLoading] = useState(false);
     const { register, handleSubmit, formState: { errors } } = useForm();
 
-    const onSubmit = (data) => {
-        showInfo(`Se enviarán instrucciones a ${data.UserEmail}`);
+    const onSubmit = async (data) => {
+        setLoading(true);
+        try {
+            const { data: res } = await forgotPassword(data.UserEmail);
+            showSuccess(res?.message || `Se enviaron instrucciones a ${data.UserEmail}`);
+            onBack();
+        } catch (err) {
+            showError(err.response?.data?.message || 'No se pudo procesar la solicitud');
+        } finally {
+            setLoading(false);
+        }
     };
 
     return (
@@ -26,10 +39,11 @@ export const ForgotForm = ({ onBack }) => {
                 {errors.UserEmail && <p className="text-red-500 text-xs mt-1">{errors.UserEmail.message}</p>}
             </div>
 
-            <button type="submit"
-                className="w-full bg-[#e11d48] hover:bg-red-700 text-white font-black py-3 rounded-xl text-sm shadow-lg transition-all active:scale-95"
+            <button type="submit" disabled={loading}
+                className="w-full bg-[#e11d48] hover:bg-red-700 disabled:opacity-60 text-white font-black py-3 rounded-xl text-sm shadow-lg transition-all active:scale-95 flex items-center justify-center gap-2"
             >
-                ENVIAR INSTRUCCIONES
+                {loading && <Spinner size="sm" color="text-white" />}
+                {loading ? 'Enviando...' : 'ENVIAR INSTRUCCIONES'}
             </button>
 
             <div className="text-center">

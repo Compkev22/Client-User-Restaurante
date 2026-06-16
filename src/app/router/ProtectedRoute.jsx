@@ -1,12 +1,12 @@
 'use strict';
 
 import { Navigate, Outlet } from 'react-router-dom';
-import { useClientStore } from '../../features/auth/store/clientStore.js';
+import { useAuthStore } from '../../features/auth/store/authStore.js';
 
 export const ProtectedRoute = () => {
-    const token          = useClientStore((s) => s.token);
-    const isAuthenticated = useClientStore((s) => s.isAuthenticated);
-    const user           = useClientStore((s) => s.user);
+    const token           = useAuthStore((s) => s.token);
+    const isAuthenticated = useAuthStore((s) => s.isAuthenticated);
+    const user            = useAuthStore((s) => s.user);
 
     if (!token || !isAuthenticated) {
         return <Navigate to="/login" replace />;

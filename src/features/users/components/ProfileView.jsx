@@ -1,11 +1,11 @@
 'use strict';
 
-import { useClientStore } from '../../auth/store/clientStore.js';
+import { useAuthStore } from '../../auth/store/authStore.js';
 import { formatDate, getInitials } from '../../../shared/utils/formatters.js';
 
 export const ProfileView = () => {
-    const user   = useClientStore((s) => s.user);
-    const logout = useClientStore((s) => s.logout);
+    const user   = useAuthStore((s) => s.user);
+    const logout = useAuthStore((s) => s.logout);
 
     if (!user) return null;
 
@@ -41,7 +41,7 @@ export const ProfileView = () => {
                 </div>
             </div>
 
-            {/* TODO: Agregar formulario de edición con updateProfileRequest() */}
+            {/* TODO: Agregar formulario de edición con useProfileStore.updateProfile() */}
 
             <button
                 onClick={logout}
