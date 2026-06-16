@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { register as registerUser } from '../../../shared/api/index.js';
+import { registerRequest } from '../../../shared/api/index.js';
 import { showSuccess, showError } from '../../../shared/utils/toast.js';
 import { Spinner } from '../../../shared/ui/Spinner.jsx';
 
@@ -14,7 +14,7 @@ export const RegisterForm = ({ onLogin }) => {
     const onSubmit = async (data) => {
         setLoading(true);
         try {
-            await registerUser({
+            await registerRequest({
                 UserName:    data.UserName,
                 UserSurname: data.UserSurname,
                 Username:    data.Username,
