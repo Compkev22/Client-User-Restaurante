@@ -1,9 +1,11 @@
+// AuthPage.jsx
 'use strict';
 
 import { useState } from 'react';
 import { LoginForm }    from '../components/LoginForm.jsx';
 import { RegisterForm } from '../components/RegisterForm.jsx';
 import { ForgotForm }   from '../components/ForgotForm.jsx';
+import logo from '../../../assets/img/KinalFriedChickenLogo.png';
 
 const VIEWS = { LOGIN: 'login', REGISTER: 'register', FORGOT: 'forgot' };
 
@@ -22,7 +24,11 @@ export const AuthPage = () => {
 
                 {/* Marca */}
                 <div className="text-center mb-6">
-                    <div className="text-5xl mb-2">🍗</div>
+                    <img
+                        src={logo}
+                        alt="Kinal Fried Chicken"
+                        className="h-24 mx-auto object-contain drop-shadow-md mb-2"
+                    />
                     <h1 className="text-2xl font-black text-gray-900 tracking-tight">
                         {titles[view]}
                     </h1>
