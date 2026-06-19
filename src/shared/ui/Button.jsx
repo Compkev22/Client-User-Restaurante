@@ -1,6 +1,6 @@
 'use strict';
 
-import { Spinner } from '../../ui/Spinner.jsx';
+import { Spinner } from './Spinner.jsx';
 
 const VARIANTS = {
     primary:   'bg-[#e11d48] hover:bg-red-700 text-white shadow-lg',
