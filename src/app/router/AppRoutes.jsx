@@ -14,7 +14,7 @@ import { CartView }          from '../../features/cart/components/CartView.jsx';
 import { CheckoutView }      from '../../features/cart/components/CheckoutView.jsx';
 import { OrdersView }        from '../../features/orders/components/OrdersView.jsx';
 import { OrderDetailView }   from '../../features/orders/components/OrderDetailView.jsx';
-import { ReservationsView }  from '../../features/reservations/components/ReservationView.jsx';
+import { ReservationsView }  from '../../features/reservations/components/ReservationsView.jsx';
 import { EventsView }        from '../../features/events/components/EventView.jsx';
 import { ReviewsView }       from '../../features/reviews/components/ReviewsView.jsx';
 import { ProfileView }       from '../../features/users/components/ProfileView.jsx';

@@ -44,7 +44,8 @@ export const getOrderById = async (id) => await axiosClient.get(`/orders/${id}`)
 // ================= DETALLES DE ORDEN =================
 export const getOrderDetailsByOrder = async (orderId) => await axiosClient.get(`/orderDetails/order/${orderId}`);
 
-// ================= RESERVACIONES =================
+export const getTableAvailability = async (branchId, date, time) =>
+    await axiosClient.get('/reservations/availability', { params: { branchId, date, time } });
 export const getReservations = async (params) => await axiosClient.get('/reservations', { params });
 export const createReservation = async (data) => await axiosClient.post('/reservations', data);
 export const updateReservation = async (id, data) => await axiosClient.put(`/reservations/${id}`, data);
