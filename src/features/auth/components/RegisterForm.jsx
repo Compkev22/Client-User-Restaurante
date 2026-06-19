@@ -2,7 +2,7 @@
 
 import { useState } from 'react';
 import { useForm } from 'react-hook-form';
-import { registerRequest } from '../../../shared/api/index.js';
+import { register as registerRequest } from '../../../shared/api/index.js';
 import { showSuccess, showError } from '../../../shared/utils/toast.js';
 import { Spinner } from '../../../shared/ui/Spinner.jsx';
 
