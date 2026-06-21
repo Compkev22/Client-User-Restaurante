@@ -396,9 +396,16 @@ export const useReviewStore = create((set, get) => ({
     deleteReview: async (id) => {
         try {
             set({ loading: true, error: null });
-            await api.deleteReview(id);
+            const res = await api.deleteReview(id);
             set({
-                reviews: get().reviews.filter((r) => r._id !== id),
+                reviews: get().reviews.map((r) =>
+                    r._id === id
+                        ? {
+                            ...r,
+                            isDeleted: !r.isDeleted,
+                        }
+                        : r
+                ),
                 loading: false,
             });
             return true;
@@ -500,11 +507,18 @@ export const useOrderRequestStore = create((set, get) => ({
         try {
             set({ loading: true, error: null });
             const res = await api.getMyOrderRequests();
-            set({ orderRequests: res.data.data, loading: false });
+
+            set({
+                orderRequests: res.data.data,
+                loading: false
+            });
+
         } catch (error) {
             set({
                 orderRequests: [],
-                error: error.response?.data?.message || 'Error al obtener tus pedidos',
+                error:
+                    error.response?.data?.message ||
+                    'Error al obtener tus pedidos',
                 loading: false,
             });
         }
