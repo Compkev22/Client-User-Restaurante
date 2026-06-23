@@ -18,6 +18,7 @@ const NAV_LINKS = [
     { label: 'RESERVAS', path: '/portal/reservas' },
     { label: 'EVENTOS',  path: '/portal/eventos' },
     { label: 'RESEÑAS',  path: '/portal/resenas' },
+    { label: 'CUPONES',  path: '/portal/cupones' },
 ];
 
 export const ClientNavbar = () => {
@@ -57,7 +58,7 @@ export const ClientNavbar = () => {
 
                     {/* Logo */}
                     <div
-                        className="flex-shrink-0 cursor-pointer select-none"
+                        className="shrink-0 cursor-pointer select-none"
                         onClick={() => navigate('/portal')}
                     >
                         <span className="text-2xl font-black text-[#e11d48] tracking-tight">
