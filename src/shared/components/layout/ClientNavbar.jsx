@@ -13,30 +13,30 @@ import { useCartStore } from '../../../features/auth/store/clientStore.js';
 import { getInitials } from '../../utils/formatters.js';
 
 const NAV_LINKS = [
-    { label: 'INICIO',   path: '/portal' },
-    { label: 'MENÚ',     path: '/portal/menu' },
+    { label: 'INICIO', path: '/portal' },
+    { label: 'SUCURSALES', path: '/portal/sucursales' },
+    { label: 'MENÚ', path: '/portal/menu' },
     { label: 'RESERVAS', path: '/portal/reservas' },
-    { label: 'EVENTOS',  path: '/portal/eventos' },
-    { label: 'RESEÑAS',  path: '/portal/resenas' },
+    { label: 'EVENTOS', path: '/portal/eventos' },
+    { label: 'RESEÑAS', path: '/portal/resenas' },
 ];
 
 export const ClientNavbar = () => {
-    const navigate  = useNavigate();
-    const location  = useLocation();
-    const user      = useAuthStore((s) => s.user);
+    const navigate = useNavigate();
+    const location = useLocation();
+    const user = useAuthStore((s) => s.user);
     const cartCount = useCartStore((s) => s.getCartCount());
 
-    const [mobileOpen,  setMobileOpen]  = useState(false);
-    const [searchOpen,  setSearchOpen]  = useState(false);
+    const [mobileOpen, setMobileOpen] = useState(false);
+    const [searchOpen, setSearchOpen] = useState(false);
     const [searchQuery, setSearchQuery] = useState('');
 
     const getLinkStyle = (path) => {
         const isActive = location.pathname === path;
-        return `cursor-pointer font-black text-sm tracking-widest transition-all pb-1 border-b-2 ${
-            isActive
+        return `cursor-pointer font-black text-sm tracking-widest transition-all pb-1 border-b-2 ${isActive
                 ? 'text-[#e11d48] border-[#e11d48]'
                 : 'text-gray-600 border-transparent hover:text-[#e11d48]'
-        }`;
+            }`;
     };
 
     const handleSearch = (e) => {
@@ -66,7 +66,7 @@ export const ClientNavbar = () => {
                     </div>
 
                     {/* Links Desktop */}
-                    <div className="hidden lg:flex items-center gap-8">
+                    <div className="hidden xl:flex items-center gap-4">
                         {NAV_LINKS.map((link) => (
                             <span
                                 key={link.path}
@@ -136,7 +136,7 @@ export const ClientNavbar = () => {
                         {/* Hamburger Mobile */}
                         <button
                             onClick={() => setMobileOpen(!mobileOpen)}
-                            className="lg:hidden p-2 text-[#e11d48] hover:bg-red-50 rounded-lg transition-colors"
+                            className="xl:hidden p-2 text-[#e11d48] hover:bg-red-50 rounded-lg transition-colors"
                         >
                             {mobileOpen
                                 ? <XMarkIcon className="w-6 h-6" />
@@ -163,11 +163,10 @@ export const ClientNavbar = () => {
                             <button
                                 key={link.path}
                                 onClick={() => { navigate(link.path); setMobileOpen(false); }}
-                                className={`block w-full text-left px-4 py-2 rounded-lg font-bold text-sm transition-colors ${
-                                    location.pathname === link.path
+                                className={`block w-full text-left px-4 py-2 rounded-lg font-bold text-sm transition-colors ${location.pathname === link.path
                                         ? 'bg-red-50 text-[#e11d48]'
                                         : 'text-gray-600 hover:bg-gray-50'
-                                }`}
+                                    }`}
                             >
                                 {link.label}
                             </button>

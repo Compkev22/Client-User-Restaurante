@@ -20,6 +20,8 @@ import { ReviewsView }       from '../../features/reviews/components/ReviewsView
 import { ProfileView }       from '../../features/users/components/ProfileView.jsx';
 import { NotFoundView }      from '../../features/home/components/NotFoundView.jsx';
 import { ResetPasswordPage } from '../../features/auth/components/ResetPasswordForm.jsx';
+import { BranchesView } from '../../features/branches/components/BranchesView.jsx';
+
 
 export const AppRoutes = () => (
     <Routes>
@@ -42,6 +44,7 @@ export const AppRoutes = () => (
                 <Route path="eventos"              element={<EventsView />} />
                 <Route path="resenas"              element={<ReviewsView />} />
                 <Route path="perfil"               element={<ProfileView />} />
+                <Route path="sucursales"           element={<BranchesView />} />
             </Route>
         </Route>
 

@@ -74,25 +74,37 @@ export const useComboStore = create((set, get) => ({
     },
 }));
 
-// ================= SUCURSALES STORE (Solo Lectura) =================
-export const useBranchStore = create((set) => ({
-    branches: [],
-    loading: false,
-    error: null,
+// ================= SUCURSALES STORE (Solo Lectura + Selección persistida) =================
+export const useBranchStore = create(
+    persist(
+        (set) => ({
+            branches: [],
+            selectedBranch: null,
+            loading: false,
+            error: null,
 
-    getBranches: async (params) => {
-        try {
-            set({ loading: true, error: null });
-            const res = await api.getBranches(params);
-            set({ branches: res.data.data, loading: false });
-        } catch (error) {
-            set({
-                error: error.response?.data?.message || 'Error al obtener sucursales',
-                loading: false,
-            });
+            getBranches: async (params) => {
+                try {
+                    set({ loading: true, error: null });
+                    const res = await api.getBranches(params);
+                    set({ branches: res.data.data, loading: false });
+                } catch (error) {
+                    set({
+                        error: error.response?.data?.message || 'Error al obtener sucursales',
+                        loading: false,
+                    });
+                }
+            },
+
+            setSelectedBranch: (branch) => set({ selectedBranch: branch }),
+            clearSelectedBranch: () => set({ selectedBranch: null }),
+        }),
+        {
+            name: 'client-branch-store',
+            partialize: (state) => ({ selectedBranch: state.selectedBranch }),
         }
-    },
-}));
+    )
+);
 
 // ================= MESAS STORE (Solo Lectura) =================
 export const useTableStore = create((set) => ({

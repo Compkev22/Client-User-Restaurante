@@ -3,11 +3,12 @@
 import { useNavigate } from 'react-router-dom';
 import { PhoneIcon, EnvelopeIcon, MapPinIcon, ClockIcon } from '@heroicons/react/24/outline';
 
-const QUICK_LINKS   = [
-    { label: 'Inicio',   path: '/portal' },
-    { label: 'Menú',     path: '/portal/menu' },
-    { label: 'Reservas', path: '/portal/reservas' },
-    { label: 'Eventos',  path: '/portal/eventos' },
+const QUICK_LINKS = [
+    { label: 'Inicio',      path: '/portal' },
+    { label: 'Sucursales',  path: '/portal/sucursales' },
+    { label: 'Menú',        path: '/portal/menu' },
+    { label: 'Reservas',    path: '/portal/reservas' },
+    { label: 'Eventos',     path: '/portal/eventos' },
 ];
 const ACCOUNT_LINKS = [
     { label: 'Mi Perfil',   path: '/portal/perfil' },
