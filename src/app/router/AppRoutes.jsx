@@ -18,6 +18,7 @@ import { ReservationsView }  from '../../features/reservations/components/Reserv
 import { EventsView }        from '../../features/events/components/EventView.jsx';
 import { ReviewsView }       from '../../features/reviews/components/ReviewsView.jsx';
 import { ProfileView }       from '../../features/users/components/ProfileView.jsx';
+import { CouponsView }       from '../../features/coupons/components/CouponsView.jsx';
 import { NotFoundView }      from '../../features/home/components/NotFoundView.jsx';
 import { ResetPasswordPage } from '../../features/auth/components/ResetPasswordForm.jsx';
 
@@ -41,6 +42,7 @@ export const AppRoutes = () => (
                 <Route path="reservas"             element={<ReservationsView />} />
                 <Route path="eventos"              element={<EventsView />} />
                 <Route path="resenas"              element={<ReviewsView />} />
+                <Route path="cupones"              element={<CouponsView />} />
                 <Route path="perfil"               element={<ProfileView />} />
             </Route>
         </Route>

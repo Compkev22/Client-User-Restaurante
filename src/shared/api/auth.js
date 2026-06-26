@@ -14,7 +14,7 @@ export const login = async ({ UserEmail, password }) => {
 };
 
 // ================= REGISTER =================
-export const register = async (data) => {
+export const registerRequest = async (data) => {
     const formData = new FormData();
     formData.append('UserName',     data.UserName);
     formData.append('UserSurname',  data.UserSurname);
