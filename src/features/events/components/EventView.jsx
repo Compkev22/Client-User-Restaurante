@@ -18,13 +18,13 @@ export const EventsView = () => {
     } = useEvents();
 
     // ── Estado de UI local (inputs controlados del formulario) ──
-    const [branchId, setBranchId]               = useState('');
-    const [name, setName]                       = useState('');
-    const [eventDate, setEventDate]             = useState('');
-    const [startTime, setStartTime]             = useState('');
-    const [endTime, setEndTime]                 = useState('');
+    const [branchId, setBranchId] = useState('');
+    const [name, setName] = useState('');
+    const [eventDate, setEventDate] = useState('');
+    const [startTime, setStartTime] = useState('');
+    const [endTime, setEndTime] = useState('');
     const [numberOfPersons, setNumberOfPersons] = useState(10);
-    const [notes, setNotes]                     = useState('');
+    const [notes, setNotes] = useState('');
     const [selectedServiceIds, setSelectedServiceIds] = useState([]);
 
     const toggleService = (id) => {
@@ -68,13 +68,13 @@ export const EventsView = () => {
             additionalServices: selectedServiceIds.map((id) => ({ additionalServiceId: id })),
         };
 
-        const ok = await submitEvent(payload);
+        const result = await submitEvent(payload);
 
-        if (ok) {
+        if (result.ok) {
             showSuccess('Evento creado exitosamente. Las mesas fueron asignadas automáticamente.');
             resetForm();
         } else {
-            showError('No se pudo crear el evento. Verifica disponibilidad de espacio.');
+            showError(result.message);
         }
     };
 

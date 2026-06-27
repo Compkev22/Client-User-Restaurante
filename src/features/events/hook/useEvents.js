@@ -40,9 +40,14 @@ export const useEvents = () => {
     const submitEvent = async (payload) => {
         try {
             await createEvent(payload);
-            return true;
+            return { ok: true };
         } catch (err) {
-            return false;
+            // Extrae el mensaje real del backend (validación o error de negocio)
+            const errors = err.response?.data?.error;
+            const message = Array.isArray(errors)
+                ? errors.map(e => e.message).join(' | ')
+                : err.response?.data?.message || 'No se pudo crear el evento.';
+            return { ok: false, message };
         }
     };
 

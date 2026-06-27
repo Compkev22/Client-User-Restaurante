@@ -6,9 +6,9 @@ import { Badge } from '../../../shared/ui/Badge.jsx';
 import { EmptyState } from '../../../shared/ui/EmptyState.jsx';
 
 const statusVariant = {
-    Pendiente:  'warning',
+    Pendiente: 'warning',
     Confirmada: 'success',
-    Cancelada:  'danger',
+    Cancelada: 'danger',
     Completada: 'neutral',
 };
 
@@ -31,7 +31,7 @@ export const MyReservationsList = ({ reservations, onCancel }) => (
                                 {res.branchId?.name || 'Sucursal'} — Mesa {res.tableId?.numberTable}
                             </p>
                             <p className="text-sm text-gray-500">
-                                {new Date(res.date).toLocaleDateString('es-GT')} a las {res.time} · {res.numberOfPersons} personas
+                                {new Intl.DateTimeFormat('es-GT', { timeZone: 'UTC' }).format(new Date(res.date))} a las {res.time}
                             </p>
                         </div>
                         <div className="flex items-center gap-3">

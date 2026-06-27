@@ -17,11 +17,13 @@ export const formatCurrency = (amount) => {
  */
 export const formatDate = (dateStr) => {
     if (!dateStr) return '—';
-    return new Date(dateStr).toLocaleDateString('es-GT', {
+    const d = new Date(dateStr);
+    return new Intl.DateTimeFormat('es-GT', {
         year: 'numeric',
         month: 'long',
         day: 'numeric',
-    });
+        timeZone: 'UTC'
+    }).format(d);
 };
 
 /**
@@ -31,7 +33,10 @@ export const formatDate = (dateStr) => {
  */
 export const formatDateShort = (dateStr) => {
     if (!dateStr) return '—';
-    return new Date(dateStr).toLocaleDateString('es-GT');
+    const d = new Date(dateStr);
+    return new Intl.DateTimeFormat('es-GT', {
+        timeZone: 'UTC'
+    }).format(d);
 };
 
 /**
