@@ -12,6 +12,8 @@ import { Button } from '../../../shared/ui/Button.jsx';
 import { CouponCard } from './CouponCard.jsx';
 import { CouponLookupModal } from './CouponLookupModal.jsx';
 import { useCouponStore } from '../../auth/store/clientStore.js';
+import UseCouponIcon from '../../../assets/icons/usecoupon.svg';
+
 
 export const CouponsView = () => {
     const coupons = useCouponStore((s) => s.coupons);
@@ -61,7 +63,9 @@ export const CouponsView = () => {
             </div>
 
             <div className="bg-linear-to-r from-orange-50 to-red-50 border border-orange-200 rounded-2xl px-5 py-4 mb-6 flex items-start gap-3">
-                <span className="text-2xl">💡</span>
+                <div className="w-10 h-10 rounded-full bg-[#e11d48] flex items-center justify-center shadow shrink-0">
+                    <img src={UseCouponIcon} alt="Cómo usar cupón" className="w-5 h-5" style={{ filter: 'brightness(0) invert(1)' }} />
+                </div>
                 <div>
                     <p className="text-sm font-bold text-[#7f1d1d]">¿Cómo usar un cupón?</p>
                     <p className="text-xs text-gray-600 mt-0.5 leading-relaxed">

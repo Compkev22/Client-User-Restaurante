@@ -6,6 +6,7 @@ import { Spinner } from '../../../shared/ui/Spinner.jsx';
 import { useEvents } from '../hook/useEvents.js';
 import { EventForm } from './EventForm.jsx';
 import { MyEventsList } from './MyEventsList.jsx';
+import EventsIcon from '../../../assets/icons/Events.svg';
 
 export const EventsView = () => {
     const {
@@ -89,7 +90,9 @@ export const EventsView = () => {
     return (
         <div className="max-w-5xl mx-auto px-4 py-10 animate-fadeIn space-y-8">
             <div className="text-center">
-                <div className="text-6xl mb-2">🎉</div>
+                <div className="w-16 h-16 mx-auto mb-2 rounded-full bg-[#e11d48] flex items-center justify-center shadow-md">
+                    <img src={EventsIcon} alt="Eventos" className="w-8 h-8" style={{ filter: 'brightness(0) invert(1)' }} />
+                </div>
                 <h1 className="text-3xl font-black text-[#7f1d1d] mb-1">Solicita tu evento</h1>
                 <p className="text-gray-500 text-sm">
                     Indica los detalles del evento; nosotros asignamos las mesas automáticamente.

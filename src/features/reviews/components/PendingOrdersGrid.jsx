@@ -2,6 +2,7 @@
 
 import { EmptyState } from '../../../shared/ui/EmptyState.jsx';
 import { PendingOrderCard } from './PendingOrderCard.jsx';
+import CheckIcon from '../../../assets/icons/Check.svg';
 
 export const PendingOrdersGrid = ({
     orders,
@@ -11,7 +12,11 @@ export const PendingOrdersGrid = ({
     if (!orders?.length) {
         return (
             <EmptyState
-                icon="✅"
+                icon={
+                    <div className="w-16 h-16 mx-auto mb-2 rounded-full bg-green-500 flex items-center justify-center shadow-md">
+                        <img src={CheckIcon} alt="Check" className="w-8 h-8" style={{ filter: 'brightness(0) invert(1)' }} />
+                    </div>
+                }
                 title="No hay pedidos ha reseñar"
                 description="Ya reseñaste todos tus pedidos entregados a domicilio o para recoger."
             />

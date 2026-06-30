@@ -9,6 +9,7 @@ import { Spinner } from '../../../shared/ui/Spinner.jsx';
 import { EmptyState } from '../../../shared/ui/EmptyState.jsx';
 import { Button } from '../../../shared/ui/Button.jsx';
 import { useBranchStore } from '../../auth/store/clientStore.js';
+import BranchesIcon from '../../../assets/icons/Branches.svg';
 
 export const BranchesView = () => {
     const { branches, loading } = useBranches();
@@ -37,8 +38,9 @@ export const BranchesView = () => {
         <div className="max-w-5xl mx-auto px-4 py-10 animate-fadeIn space-y-8">
             {/* Header */}
             <div className="text-center">
-                <div className="text-5xl mb-3">🏪</div>
-                <h1 className="text-3xl font-black text-[#7f1d1d] mb-1">Nuestras Sucursales</h1>
+                <div className="w-16 h-16 mx-auto mb-2 rounded-full bg-[#e11d48] flex items-center justify-center shadow-md">
+                    <img src={BranchesIcon} alt="Sucursales" className="w-8 h-8" style={{ filter: 'brightness(0) invert(1)' }} />
+                </div>                <h1 className="text-3xl font-black text-[#7f1d1d] mb-1">Nuestras Sucursales</h1>
                 <p className="text-gray-500 text-sm">
                     Selecciona la sucursal desde donde quieres pedir o reservar.
                 </p>
@@ -58,8 +60,7 @@ export const BranchesView = () => {
 
             {/* Grid de sucursales */}
             {branches.length === 0 ? (
-                <EmptyState
-                    icon="🏪"
+                <EmptyState icon={<img src={BranchesIcon} alt="" className="w-12 h-12 mx-auto opacity-30" />}
                     title="Sin sucursales disponibles"
                     description="No hay sucursales registradas en este momento."
                 />

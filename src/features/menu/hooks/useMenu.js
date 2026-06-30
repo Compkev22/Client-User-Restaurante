@@ -1,9 +1,9 @@
-
 'use strict';
 
 import { useState, useEffect } from 'react';
 import { getMenu } from '../../../shared/api/client.js';
 import { showError } from '../../../shared/utils/toast.js';
+import { useBranchStore } from '../../auth/store/clientStore.js';
 
 export const useMenu = () => {
     const [menuItems, setMenuItems] = useState([]);
@@ -11,10 +11,13 @@ export const useMenu = () => {
     const [search, setSearch]       = useState('');
     const [filterType, setFilterType] = useState('TODOS');
 
+    const { selectedBranch } = useBranchStore();
+
     useEffect(() => {
         const fetch = async () => {
+            setLoading(true);
             try {
-                const { data } = await getMenu();
+                const { data } = await getMenu(selectedBranch?._id);
                 setMenuItems(data.menu || []);
             } catch {
                 showError('No se pudo cargar el menú.');
@@ -23,7 +26,7 @@ export const useMenu = () => {
             }
         };
         fetch();
-    }, []);
+    }, [selectedBranch?._id]); // ← recarga cuando cambia la sucursal
 
     const filtered = menuItems.filter((item) => {
         const matchSearch = item.name.toLowerCase().includes(search.toLowerCase()) ||

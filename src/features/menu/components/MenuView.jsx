@@ -9,6 +9,8 @@ import { Badge } from '../../../shared/ui/Badge.jsx';
 import { Button } from '../../../shared/ui/Button.jsx';
 import { ShoppingCartIcon } from '@heroicons/react/24/outline';
 import { showSuccess, showError } from '../../../shared/utils/toast.js';
+import MenuIcon from '../../../assets/icons/Menu.svg';
+
 
 const FALLBACK_PRODUCT = 'https://images.unsplash.com/photo-1504674900247-0877df9cc836?w=400&h=200&auto=format&fit=crop';
 const FALLBACK_COMBO = 'https://images.unsplash.com/photo-1568901346375-23c9450c58cd?w=400&h=200&auto=format&fit=crop';
@@ -56,8 +58,8 @@ export const MenuView = () => {
             <div className="flex flex-col sm:flex-row sm:items-end sm:justify-between gap-4">
                 <div>
                     <h1 className="text-2xl sm:text-3xl font-black text-[#7f1d1d]">
-                        🥗 Nuestro <span className="text-[#e11d48]">Menú</span>
-                    </h1>
+                        <img src={MenuIcon} alt="Menú" className="w-7 h-7 inline-block mr-2 align-middle" style={{ filter: 'invert(15%) sepia(80%) saturate(900%) hue-rotate(330deg)' }} />
+                        Nuestro <span className="text-[#e11d48]">Menú</span>                    </h1>
                     <p className="text-gray-500 text-sm mt-1">
                         {total} productos disponibles
                         {selectedBranch && <span className="ml-2 text-[#e11d48] font-bold">— {selectedBranch.name}</span>}
@@ -102,8 +104,8 @@ export const MenuView = () => {
                             key={cat}
                             onClick={() => setFilterType(cat)}
                             className={`px-4 py-2.5 rounded-xl text-xs font-black border transition-all ${filterType === cat
-                                    ? 'bg-[#e11d48] text-white border-[#e11d48]'
-                                    : 'bg-white text-gray-600 border-orange-200 hover:border-[#e11d48]'
+                                ? 'bg-[#e11d48] text-white border-[#e11d48]'
+                                : 'bg-white text-gray-600 border-orange-200 hover:border-[#e11d48]'
                                 }`}
                         >
                             {cat}
@@ -116,16 +118,16 @@ export const MenuView = () => {
 
             {/* Grid */}
             {filtered.length === 0 ? (
-                <EmptyState icon="🍽️" title="Sin resultados" description="No encontramos productos con esos filtros." />
+                <EmptyState icon={<img src={MenuIcon} alt="" className="w-12 h-12 mx-auto opacity-30" />} title="Sin resultados" description="No encontramos productos con esos filtros." />
             ) : (
                 <div className="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 xl:grid-cols-4 gap-5">
                     {filtered.map((item) => {
                         const isCombo = item.type === 'Combo';
                         const imgSrc = item.type === 'Individual' && item.imagen_url && !item.imagen_url.includes('default-product')
-    ? item.imagen_url
-    : item.type === 'Combo' && item.image?.url
-        ? item.image.url
-        : (isCombo ? FALLBACK_COMBO : FALLBACK_PRODUCT);
+                            ? item.imagen_url
+                            : item.type === 'Combo' && item.image?.url
+                                ? item.image.url
+                                : (isCombo ? FALLBACK_COMBO : FALLBACK_PRODUCT);
 
                         return (
                             <div
@@ -140,9 +142,10 @@ export const MenuView = () => {
                                         className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
                                         onError={(e) => { e.target.src = isCombo ? FALLBACK_COMBO : FALLBACK_PRODUCT; }}
                                     />
+                                    {/* Badge de tipo — moverlo aquí en vez del precio */}
                                     {isCombo && (
-                                        <div className="absolute top-2 right-2 bg-[#e11d48] text-white font-black px-2.5 py-1 rounded-xl shadow text-xs rotate-3">
-                                            Q {item.price?.toFixed(2)}
+                                        <div className="absolute top-2 right-2 bg-[#facc15] text-red-900 font-black px-2.5 py-1 rounded-xl shadow text-[10px]">
+                                            COMBO
                                         </div>
                                     )}
                                 </div>
@@ -150,8 +153,8 @@ export const MenuView = () => {
                                 {/* Contenido */}
                                 <div className="p-4 flex flex-col flex-1">
                                     <span className={`text-[10px] font-black uppercase px-2.5 py-1 rounded-full w-fit mb-2 ${isCombo
-                                            ? 'bg-yellow-100 text-yellow-700 border border-yellow-200'
-                                            : 'bg-orange-50 text-[#fb923c] border border-orange-100'
+                                        ? 'bg-yellow-100 text-yellow-700 border border-yellow-200'
+                                        : 'bg-orange-50 text-[#fb923c] border border-orange-100'
                                         }`}>
                                         {item.type} {item.category && `· ${item.category}`}
                                     </span>
@@ -164,18 +167,16 @@ export const MenuView = () => {
                                         <p className="text-xs text-gray-500 mb-2 line-clamp-2">{item.description}</p>
                                     )}
 
+                                    {/* Footer — precio igual para ambos tipos */}
                                     <div className="flex items-center justify-between mt-auto pt-3 border-t border-gray-50">
-                                        {!isCombo && (
-                                            <span className="text-lg font-black text-[#e11d48]">
-                                                Q{item.price?.toFixed(2)}
-                                            </span>
-                                        )}
-                                        {isCombo && <span />}
+                                        <span className="text-lg font-black text-[#e11d48]">
+                                            Q{item.price?.toFixed(2)}
+                                        </span>
                                         <button
                                             onClick={() => handleAddToCart(item)}
-                                            className="flex items-center gap-1.5 bg-[#e11d48] hover:bg-red-700 text-white text-xs font-black px-3 py-2 rounded-xl transition-all active:scale-95 ml-auto"
+                                            className="flex items-center gap-1.5 bg-[#e11d48] hover:bg-red-700 text-white text-xs font-black px-3 py-2 rounded-xl transition-all active:scale-95"
                                         >
-                                            🛒 Agregar
+                                            <ShoppingCartIcon className="w-3.5 h-3.5" /> Agregar
                                         </button>
                                     </div>
                                 </div>

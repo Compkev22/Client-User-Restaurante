@@ -2,27 +2,28 @@
 
 import { useNavigate } from 'react-router-dom';
 import { PhoneIcon, EnvelopeIcon, MapPinIcon, ClockIcon } from '@heroicons/react/24/outline';
+import logo from '../../../assets/img/KinalFriedChickenLogo.png';
 
 const QUICK_LINKS = [
-    { label: 'Inicio',      path: '/portal' },
-    { label: 'Sucursales',  path: '/portal/sucursales' },
-    { label: 'Menú',        path: '/portal/menu' },
-    { label: 'Reservas',    path: '/portal/reservas' },
-    { label: 'Eventos',     path: '/portal/eventos' },
+    { label: 'Inicio', path: '/portal' },
+    { label: 'Sucursales', path: '/portal/sucursales' },
+    { label: 'Menú', path: '/portal/menu' },
+    { label: 'Reservas', path: '/portal/reservas' },
+    { label: 'Eventos', path: '/portal/eventos' },
 ];
 const ACCOUNT_LINKS = [
-    { label: 'Mi Perfil',   path: '/portal/perfil' },
+    { label: 'Mi Perfil', path: '/portal/perfil' },
     { label: 'Mis Pedidos', path: '/portal/pedidos' },
-    { label: 'Reseñas',     path: '/portal/resenas' },
+    { label: 'Reseñas', path: '/portal/resenas' },
 ];
-const LEGAL_LINKS   = [
+const LEGAL_LINKS = [
     { label: 'Términos y Condiciones', path: '/portal/terminos' },
     { label: 'Política de Privacidad', path: '/portal/privacidad' },
 ];
 
 export const ClientFooter = () => {
-    const navigate     = useNavigate();
-    const currentYear  = new Date().getFullYear();
+    const navigate = useNavigate();
+    const currentYear = new Date().getFullYear();
 
     return (
         <footer className="bg-[#2d1810] text-white mt-auto">
@@ -30,11 +31,12 @@ export const ClientFooter = () => {
                 <div className="grid md:grid-cols-4 gap-8 mb-8">
 
                     {/* Marca */}
-                    <div>
-                        <h3 className="text-xl font-black mb-3 text-[#fb923c]">KINAL 🍗</h3>
-                        <p className="text-gray-300 text-sm leading-relaxed">
-                            El mejor sabor de pollo frito con la mejor experiencia de servicio en Guatemala.
-                        </p>
+                    <div className="flex items-center gap-2 mb-3">
+                        <img src={logo} alt="KFC Logo" className="h-8 w-auto object-contain" />
+                        <div className="leading-tight">
+                            <p className="text-lg font-black text-[#fb923c]">KINAL</p>
+                            <p className="text-[10px] font-black text-orange-300 tracking-widest">FRIED CHICKEN</p>
+                        </div>
                     </div>
 
                     {/* Menú Rápido */}

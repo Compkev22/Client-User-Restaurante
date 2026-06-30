@@ -6,7 +6,7 @@ import { axiosClient } from './api.js';
 export const syncProfile = async (data) => await axiosClient.post('/users/sync', data);
 
 // ================= MENÚ (SOLO LECTURA) =================
-export const getMenu = async () => await axiosClient.get('/menu');
+export const getMenu = async (branchId) => await axiosClient.get('/menu', { params: { branchId } });
 
 // ================= PRODUCTOS =================
 export const getProducts = async (params) => await axiosClient.get('/products', { params });
