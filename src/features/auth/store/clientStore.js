@@ -573,6 +573,20 @@ export const useOrderRequestStore = create((set, get) => ({
             return false;
         }
     },
+
+    payOrderRequest: async (id) => {
+        try {
+            const res = await api.payOrderRequest(id);
+            set({
+                orderRequests: get().orderRequests.map((o) =>
+                    o._id === id ? res.data.data.orderRequest : o,
+                ),
+            });
+            return res.data.data;
+        } catch (error) {
+            throw error;
+        }
+    },
 }));
 
 // ================= PROFILE STORE (Mi Perfil) =================
