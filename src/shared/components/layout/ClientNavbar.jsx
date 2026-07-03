@@ -15,6 +15,7 @@ const NAV_LINKS = [
     { label: 'EVENTOS',    path: '/portal/eventos' },
     { label: 'RESEÑAS',    path: '/portal/resenas' },
     { label: 'CUPONES',    path: '/portal/cupones' },
+    { label: 'MIS PEDIDOS', path: '/portal/pedidos'}
 ];
 
 export const ClientNavbar = () => {

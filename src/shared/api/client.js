@@ -36,6 +36,7 @@ export const deleteCoupon = async (id) => await axiosClient.patch(`/coupons/${id
 export const createOrderRequest = async (data) => await axiosClient.post('/orderRequests', data);
 export const getMyOrderRequests = async () => await axiosClient.get('/orderRequests/mine');
 export const cancelOrderRequest = async (id) => await axiosClient.put(`/orderRequests/cancel/${id}`);
+export const payOrderRequest = async (id) => await axiosClient.patch(`/orderRequests/pay/${id}`);
 
 // ================= ÓRDENES =================
 export const getOrders = async (params) => await axiosClient.get('/orders', { params });
@@ -65,6 +66,8 @@ export const deleteReview = async (id) => await axiosClient.patch(`/reviews/${id
 // ================= FACTURACIÓN =================
 export const getBillings = async () => await axiosClient.get('/billings');
 export const getBillingById = async (id) => await axiosClient.get(`/billings/${id}`);
+export const getBillingByOrder = async (orderId) => await axiosClient.get(`/billings/order/${orderId}`);
+export const sendInvoice = async (orderId, email) => await axiosClient.post(`/billings/send-invoice/${orderId}`, { email });
 
 // ================= PERFIL (USUARIOS) =================
 export const getProfile = async () => await axiosClient.get('/users/profile');
