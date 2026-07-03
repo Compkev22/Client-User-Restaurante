@@ -7,16 +7,16 @@ import { formatDateShort } from '../../../shared/utils/formatters.js';
 
 const statusVariant = {
     Pendiente:  'warning',
-    Confirmado: 'success',
-    Cancelado:  'danger',
+    Aceptada: 'success',
+    Rechazada:  'danger',
     Finalizado: 'neutral',
 };
 
-export const MyEventsList = ({ events }) => (
+export const MyEventsList = ({ eventRequests }) => (
     <div>
         <h2 className="text-xl font-black text-gray-800 mb-4">Mis eventos</h2>
 
-        {events.length === 0 ? (
+        {eventRequests.length === 0 ? (
             <EmptyState
                 icon="🎉"
                 title="Sin eventos todavía"
@@ -24,7 +24,7 @@ export const MyEventsList = ({ events }) => (
             />
         ) : (
             <div className="space-y-3">
-                {events.map((ev) => (
+                {eventRequests.map((ev) => (
                     <Card key={ev._id} className="flex items-center justify-between flex-wrap gap-3">
                         <div>
                             <p className="font-bold text-gray-800">{ev.name}</p>

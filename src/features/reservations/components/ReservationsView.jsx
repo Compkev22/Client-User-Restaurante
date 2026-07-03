@@ -9,6 +9,7 @@ import { ReservationSearchForm } from './ReservationSearchForm.jsx';
 import { TableAvailabilityGrid } from './TableAvailabilityGrid.jsx';
 import { MyReservationsList } from './MyReservationsList.jsx';
 import ReservationIcon from '../../../assets/icons/Reservation.svg';
+import { updateReservation } from '../../../shared/api/client.js';
 
 export const ReservationsView = () => {
     const {
@@ -25,12 +26,13 @@ export const ReservationsView = () => {
     } = useReservations();
 
     // ── Estado de UI local (inputs controlados del formulario) ──
-    const [branchId, setBranchId]   = useState('');
-    const [date, setDate]           = useState('');
-    const [time, setTime]           = useState('');
+    const [branchId, setBranchId] = useState('');
+    const [date, setDate] = useState('');
+    const [time, setTime] = useState('');
     const [numberOfPersons, setNumberOfPersons] = useState(2);
-    const [notes, setNotes]         = useState('');
+    const [notes, setNotes] = useState('');
     const [selectedTableId, setSelectedTableId] = useState('');
+    const [editingReservation, setEditingReservation] = useState(null);
 
     const selectedBranch = useMemo(
         () => branches.find((b) => b._id === branchId),
@@ -97,6 +99,50 @@ export const ReservationsView = () => {
         );
     }
 
+    // Handler para guardar la edición:
+    const handleUpdateReservation = async (e) => {
+        e.preventDefault();
+        if (!selectedTableId && !editingReservation.tableId) {
+            showError('Selecciona una mesa.');
+            return;
+        }
+        setSubmitting(true);
+        try {
+            await updateReservation(editingReservation._id, {
+                branchId,
+                tableId: selectedTableId || editingReservation.tableId._id,
+                date,
+                time,
+                numberOfPersons: Number(numberOfPersons),
+                notes,
+            });
+            showSuccess('Reservación actualizada.');
+            const { data } = await getReservations();
+            setMyReservations(data?.reservations || []);
+            setEditingReservation(null);
+            // Limpiar formulario
+            setBranchId(''); setDate(''); setTime('');
+            setNumberOfPersons(2); setNotes(''); setSelectedTableId('');
+        } catch (err) {
+            showError(err.response?.data?.message || 'No se pudo actualizar la reservación.');
+        } finally {
+            setSubmitting(false);
+        }
+    };
+
+    // Handler para pre-rellenar el form con los datos de la reserva a editar:
+    const handleEditReservation = (res) => {
+        setEditingReservation(res);
+        setBranchId(res.branchId?._id || res.branchId || '');
+        setDate(new Date(res.date).toISOString().split('T')[0]);
+        setTime(res.time || '');
+        setNumberOfPersons(res.numberOfPersons || 2);
+        setNotes(res.notes || '');
+        setSelectedTableId('');
+        // Scroll al formulario
+        window.scrollTo({ top: 0, behavior: 'smooth' });
+    };
+
     return (
         <div className="max-w-5xl mx-auto px-4 py-10 animate-fadeIn space-y-8">
             <div className="text-center">
@@ -128,6 +174,15 @@ export const ReservationsView = () => {
                 onSubmit={handleSubmit}
                 submitting={submitting}
                 selectedTableId={selectedTableId}
+                onSubmit={editingReservation ? handleUpdateReservation : handleSubmit}
+                submitting={submitting}
+                selectedTableId={selectedTableId}
+                editingReservation={editingReservation}
+                onCancelEdit={() => {
+                    setEditingReservation(null);
+                    setBranchId(''); setDate(''); setTime('');
+                    setNumberOfPersons(2); setNotes(''); setSelectedTableId('');
+                }}
             >
                 <TableAvailabilityGrid
                     branchId={branchId}
@@ -144,6 +199,7 @@ export const ReservationsView = () => {
             <MyReservationsList
                 reservations={myReservations}
                 onCancel={handleCancel}
+                onEdit={handleEditReservation}
             />
         </div>
     );

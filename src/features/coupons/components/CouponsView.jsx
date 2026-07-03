@@ -42,24 +42,18 @@ export const CouponsView = () => {
     return (
         <div className="max-w-5xl mx-auto px-4 py-8 animate-fadeIn">
 
-            <div className="flex flex-col sm:flex-row sm:items-center justify-between gap-4 mb-6">
-                <div>
-                    <h1 className="text-2xl font-black text-gray-900 flex items-center gap-2">
-                        <TicketIcon className="w-7 h-7 text-[#e11d48]" />
-                        Cupones de descuento
-                    </h1>
-                    <p className="text-sm text-gray-500 mt-0.5">
-                        Cupones disponibles para aplicar en tu próximo pedido
-                    </p>
+            <div className="text-center mb-6">
+                <div className="w-16 h-16 mx-auto mb-2 rounded-full bg-[#e11d48] flex items-center justify-center shadow-md">
+                    <TicketIcon className="w-8 h-8 text-white" />
                 </div>
-
-                <Button
-                    variant="outline"
-                    onClick={() => setLookupOpen(true)}
-                >
-                    <QuestionMarkCircleIcon className="w-4 h-4" />
-                    Verificar código
-                </Button>
+                <h1 className="text-3xl font-black text-[#7f1d1d] mb-1">Cupones de descuento</h1>
+                <p className="text-gray-500 text-sm">Cupones disponibles para aplicar en tu próximo pedido</p>
+                <div className="mt-3 flex justify-center">
+                    <Button variant="outline" onClick={() => setLookupOpen(true)}>
+                        <QuestionMarkCircleIcon className="w-4 h-4" />
+                        Verificar código
+                    </Button>
+                </div>
             </div>
 
             <div className="bg-linear-to-r from-orange-50 to-red-50 border border-orange-200 rounded-2xl px-5 py-4 mb-6 flex items-start gap-3">

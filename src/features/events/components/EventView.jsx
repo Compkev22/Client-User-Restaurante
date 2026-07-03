@@ -10,7 +10,7 @@ import EventsIcon from '../../../assets/icons/Events.svg';
 
 export const EventsView = () => {
     const {
-        events,
+        eventRequests, 
         additionalServices,
         branches,
         loadingPage,
@@ -115,7 +115,7 @@ export const EventsView = () => {
                 submitting={submitting}
             />
 
-            <MyEventsList events={events} />
+            <MyEventsList eventRequests={eventRequests} />
         </div>
     );
 };

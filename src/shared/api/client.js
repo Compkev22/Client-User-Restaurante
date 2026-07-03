@@ -54,8 +54,9 @@ export const deleteReservation = async (id) => await axiosClient.delete(`/reserv
 // ================= EVENTOS =================
 export const getEvents = async () => await axiosClient.get('/events');
 export const getEventById = async (id) => await axiosClient.get(`/events/${id}`);
-export const createEvent = async (data) => await axiosClient.post('/events', data);
-
+export const getEventRequests    = async ()     => await axiosClient.get('/event-requests');
+export const createEventRequest  = async (data) => await axiosClient.post('/event-requests', data);
+export const cancelEventRequest  = async (id)   => await axiosClient.delete(`/event-requests/${id}`);
 // ================= RESEÑAS =================
 export const getMyReviews = async () => await axiosClient.get('/reviews/mine');
 export const createReview = async (data) => await axiosClient.post('/reviews', data);

@@ -1,65 +1,77 @@
 'use strict';
 
-import { useEffect, useCallback } from 'react';
+import { useState, useEffect, useCallback } from 'react';
 import {
-    useEventStore,
-    useAdditionalServiceStore,
-    useBranchStore,
-} from '../../auth/store/clientStore.js';
+    getEventRequests,
+    createEventRequest,
+    cancelEventRequest,
+    getAdditionalServices as fetchAdditionalServices,
+    getBranches as fetchBranches,
+} from '../../../shared/api/client.js';
+import { showSuccess, showError } from '../../../shared/utils/toast.js';
 
 export const useEvents = () => {
-    const {
-        events,
-        loading: loadingEvents,
-        createEvent,
-        getEvents,
-    } = useEventStore();
+    const [eventRequests, setEventRequests] = useState([]);
+    const [additionalServices, setAdditionalServices]   = useState([]);
+    const [branches, setBranches]           = useState([]);
+    const [loadingPage, setLoadingPage]     = useState(true);
+    const [submitting, setSubmitting]       = useState(false);
 
-    const {
-        additionalServices,
-        loading: loadingServices,
-        getAdditionalServices,
-    } = useAdditionalServiceStore();
-
-    const {
-        branches,
-        loading: loadingBranches,
-        getBranches,
-    } = useBranchStore();
-
-    useEffect(() => {
-        getEvents();
-        getAdditionalServices();
-        getBranches();
+    const fetchAll = useCallback(async () => {
+        setLoadingPage(true);
+        try {
+            const [reqRes, svcRes, branchRes] = await Promise.all([
+                getEventRequests(),
+                fetchAdditionalServices(),
+                fetchBranches(),
+            ]);
+            setEventRequests(reqRes.data?.data || []);
+            setAdditionalServices(svcRes.data?.data || []);
+            setBranches(branchRes.data?.data || []);
+        } catch {
+            showError('No se pudo cargar la información de eventos.');
+        } finally {
+            setLoadingPage(false);
+        }
     }, []);
 
-    const refetchEvents = useCallback(async () => {
-        await getEvents();
-    }, [getEvents]);
+    useEffect(() => { fetchAll(); }, [fetchAll]);
 
     const submitEvent = async (payload) => {
+        setSubmitting(true);
         try {
-            await createEvent(payload);
+            await createEventRequest(payload);
+            showSuccess('Solicitud enviada. El administrador la revisará pronto.');
+            await fetchAll();
             return { ok: true };
         } catch (err) {
-            // Extrae el mensaje real del backend (validación o error de negocio)
             const errors = err.response?.data?.error;
             const message = Array.isArray(errors)
                 ? errors.map(e => e.message).join(' | ')
-                : err.response?.data?.message || 'No se pudo crear el evento.';
+                : err.response?.data?.message || 'No se pudo enviar la solicitud.';
             return { ok: false, message };
+        } finally {
+            setSubmitting(false);
         }
     };
 
-    const loadingPage = loadingEvents || loadingServices || loadingBranches;
+    const cancelRequest = async (id) => {
+        try {
+            await cancelEventRequest(id);
+            showSuccess('Solicitud cancelada.');
+            await fetchAll();
+        } catch (err) {
+            showError(err.response?.data?.message || 'No se pudo cancelar la solicitud.');
+        }
+    };
 
     return {
-        events,
+        eventRequests,       
         additionalServices,
         branches,
         loadingPage,
-        submitting: loadingEvents,
+        submitting,
         submitEvent,
-        refetchEvents,
+        cancelRequest,
     };
 };
