@@ -73,3 +73,4 @@ export const sendInvoice = async (orderId, email) => await axiosClient.post(`/bi
 // ================= PERFIL (USUARIOS) =================
 export const getProfile = async () => await axiosClient.get('/users/profile');
 export const updateProfile = async (id, data) => await axiosClient.put(`/users/${id}`, data);
+export const deactivateAccount = async () => await axiosClient.delete('/users/me');

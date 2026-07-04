@@ -61,3 +61,24 @@ export const resetPassword = async (token, newPassword) => {
         headers: { 'Content-Type': 'multipart/form-data' },
     });
 };
+
+// ================= CAMBIAR CONTRASEÑA =================
+export const changePassword = async (currentPassword, newPassword) => {
+    const formData = new FormData();
+    formData.append('CurrentPassword', currentPassword);
+    formData.append('NewPassword', newPassword);
+
+    return await axiosAuth.post('/api/v1/Auth/change-password', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+    });
+};
+
+// ================= ELIMINAR CUENTA =================
+export const deleteAccountRequest = async (password) => {
+    const formData = new FormData();
+    formData.append('Password', password);
+
+    return await axiosAuth.post('/api/v1/Auth/delete-account', formData, {
+        headers: { 'Content-Type': 'multipart/form-data' },
+    });
+};

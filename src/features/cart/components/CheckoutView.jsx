@@ -12,11 +12,13 @@ import { DeliveryStep } from './DeliveryStep.jsx';
 import { PaymentStep } from './PaymentStep.jsx';
 import { BillingStep } from './BillingStep.jsx';
 import { ConfirmationStep } from './ConfirmationStep.jsx';
+import { CouponStep } from './CouponStep.jsx';
 
 const STEPS = {
     TYPE: 'type',
     PICKUP: 'pickup',
     DELIVERY: 'delivery',
+    COUPON: 'coupon',
     PAYMENT: 'payment',
     BILLING: 'billing',
     CONFIRMING: 'confirming',
@@ -45,6 +47,7 @@ export const CheckoutView = () => {
     const [cardCvv, setCardCvv] = useState('');
     const [nit, setNit] = useState('');
     const [billEmail, setBillEmail] = useState('');
+    const [appliedCoupon, setAppliedCoupon] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
 
@@ -53,7 +56,9 @@ export const CheckoutView = () => {
         return null;
     }
 
-    const total = getCartTotal();
+    const rawTotal = getCartTotal();
+    const discountPercentage = appliedCoupon?.discountPercentage || 0;
+    const total = rawTotal * (1 - discountPercentage / 100);
     const iva = total - total / 1.12;
     const subtotal = total / 1.12;
 
@@ -67,15 +72,19 @@ export const CheckoutView = () => {
         setPickupBranch(branch);
         setSelectedBranch(branch);
         setError('');
-        setStep(STEPS.PAYMENT);
+        setStep(STEPS.COUPON);
     };
 
     const handleConfirmDelivery = () => {
         if (!deliveryAddress.trim()) { setError('Ingresa una direccion de entrega.'); return; }
         if (!deliveryLat || !deliveryLng) { setError('Selecciona la ubicacion en el mapa.'); return; }
         setError('');
-        setStep(STEPS.PAYMENT);
+        setStep(STEPS.COUPON);
     };
+
+    const handleApplyCoupon = (coupon) => setAppliedCoupon(coupon);
+    const handleRemoveCoupon = () => setAppliedCoupon(null);
+    const handleConfirmCoupon = () => setStep(STEPS.PAYMENT);
 
     const handlePay = (valid) => {
         if (!valid) { setError('Completa todos los datos de la tarjeta.'); return; }
@@ -102,12 +111,13 @@ export const CheckoutView = () => {
                 deliveryLat: orderType === 'DELIVERY' ? deliveryLat : undefined,
                 deliveryLng: orderType === 'DELIVERY' ? deliveryLng : undefined,
                 items,
+                couponCode: appliedCoupon ? appliedCoupon.code : undefined,
                 nit: nit.trim() || undefined,
                 billEmail: billEmail.trim() || undefined,
             });
 
             if (billEmail.trim() && res?.data?.order) {
-                try { await sendInvoice(res.data.order, billEmail.trim()); } catch {}
+                try { await sendInvoice(res.data.order, billEmail.trim()); } catch { }
             }
 
             clearCart();
@@ -148,6 +158,17 @@ export const CheckoutView = () => {
         />
     );
 
+    if (step === STEPS.COUPON) return (
+        <CouponStep
+            appliedCoupon={appliedCoupon}
+            onApply={handleApplyCoupon}
+            onRemove={handleRemoveCoupon}
+            rawTotal={rawTotal}
+            onConfirm={handleConfirmCoupon}
+            onBack={() => goBack(orderType === 'DELIVERY' ? STEPS.DELIVERY : STEPS.PICKUP)}
+        />
+    );
+
     if (step === STEPS.PAYMENT || step === STEPS.CONFIRMING) return (
         <PaymentStep
             cardNumber={cardNumber} setCardNumber={setCardNumber}
@@ -158,8 +179,7 @@ export const CheckoutView = () => {
             isConfirming={step === STEPS.CONFIRMING}
             total={total} subtotal={subtotal} iva={iva}
             onPay={handlePay}
-            onBack={() => goBack(orderType === 'DELIVERY' ? STEPS.DELIVERY : STEPS.PICKUP)}
-        />
+            onBack={() => goBack(STEPS.COUPON)} />
     );
 
     if (step === STEPS.BILLING) return (

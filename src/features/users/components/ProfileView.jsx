@@ -12,22 +12,26 @@ import { Spinner } from '../../../shared/ui/Spinner.jsx';
 import { ProfileModal } from './ProfileModal.jsx';
 import { AddressCard } from './AddressCard.jsx';
 import { AddressModal } from './AddressModal.jsx';
+import { ChangePasswordModal } from './ChangePasswordModal.jsx';
+import { DeleteAccountModal } from './DeleteAccountModal.jsx';
 
 export const ProfileView = () => {
-    const logout      = useAuthStore((s) => s.logout);
-    const updateUser  = useAuthStore((s) => s.updateUser);
+    const logout = useAuthStore((s) => s.logout);
+    const updateUser = useAuthStore((s) => s.updateUser);
 
     const [profile, setProfile] = useState(null);
     const [loading, setLoading] = useState(true);
     const [editing, setEditing] = useState(false);
-    const [saving, setSaving]   = useState(false);
-    const [form, setForm]       = useState({ UserName: '', UserSurname: '', phone: '' });
-    const [errors, setErrors]   = useState({});
+    const [saving, setSaving] = useState(false);
+    const [form, setForm] = useState({ UserName: '', UserSurname: '', phone: '' });
+    const [errors, setErrors] = useState({});
 
     const [addressModalOpen, setAddressModalOpen] = useState(false);
-    const [editingIndex, setEditingIndex]          = useState(null); // null = nueva
-    const [savingAddress, setSavingAddress]         = useState(false);
-    const [deletingIndex, setDeletingIndex]         = useState(null);
+    const [editingIndex, setEditingIndex] = useState(null); // null = nueva
+    const [savingAddress, setSavingAddress] = useState(false);
+    const [deletingIndex, setDeletingIndex] = useState(null);
+    const [changePasswordOpen, setChangePasswordOpen] = useState(false);
+    const [deleteAccountOpen, setDeleteAccountOpen] = useState(false);
 
     const addresses = profile?.addresses || [];
 
@@ -293,6 +297,18 @@ export const ProfileView = () => {
                 )}
             </div>
 
+            <div className="bg-white rounded-2xl p-6 shadow-sm border border-gray-100 mb-6 space-y-3">
+                <h3 className="text-sm font-black text-[#a16207] uppercase tracking-wide mb-2">
+                    Seguridad
+                </h3>
+                <Button variant="outline" className="w-full" onClick={() => setChangePasswordOpen(true)}>
+                    Cambiar contraseña
+                </Button>
+                <Button variant="danger" className="w-full" onClick={() => setDeleteAccountOpen(true)}>
+                    Eliminar cuenta
+                </Button>
+            </div>
+
             <button
                 onClick={logout}
                 className="w-full border-2 border-[#e11d48] text-[#e11d48] hover:bg-red-50 font-black py-3 rounded-xl transition-all"
@@ -306,6 +322,17 @@ export const ProfileView = () => {
                 onSubmit={handleSubmitAddress}
                 address={editingIndex !== null ? addresses[editingIndex] : null}
                 saving={savingAddress}
+            />
+
+            <ChangePasswordModal
+                open={changePasswordOpen}
+                onClose={() => setChangePasswordOpen(false)}
+            />
+
+            <DeleteAccountModal
+                open={deleteAccountOpen}
+                onClose={() => setDeleteAccountOpen(false)}
+                onDeleted={logout}
             />
         </div>
     );

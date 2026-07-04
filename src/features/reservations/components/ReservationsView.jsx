@@ -9,7 +9,6 @@ import { ReservationSearchForm } from './ReservationSearchForm.jsx';
 import { TableAvailabilityGrid } from './TableAvailabilityGrid.jsx';
 import { MyReservationsList } from './MyReservationsList.jsx';
 import ReservationIcon from '../../../assets/icons/Reservation.svg';
-import { updateReservation } from '../../../shared/api/client.js';
 
 export const ReservationsView = () => {
     const {
@@ -22,6 +21,7 @@ export const ReservationsView = () => {
         fetchAvailability,
         clearTables,
         submitReservation,
+        updateReservationById,
         cancelReservation,
     } = useReservations();
 
@@ -106,27 +106,20 @@ export const ReservationsView = () => {
             showError('Selecciona una mesa.');
             return;
         }
-        setSubmitting(true);
-        try {
-            await updateReservation(editingReservation._id, {
-                branchId,
-                tableId: selectedTableId || editingReservation.tableId._id,
-                date,
-                time,
-                numberOfPersons: Number(numberOfPersons),
-                notes,
-            });
-            showSuccess('Reservación actualizada.');
-            const { data } = await getReservations();
-            setMyReservations(data?.reservations || []);
+
+        const ok = await updateReservationById(editingReservation._id, {
+            branchId,
+            tableId: selectedTableId || editingReservation.tableId._id,
+            date,
+            time,
+            numberOfPersons: Number(numberOfPersons),
+            notes,
+        });
+
+        if (ok) {
             setEditingReservation(null);
-            // Limpiar formulario
             setBranchId(''); setDate(''); setTime('');
             setNumberOfPersons(2); setNotes(''); setSelectedTableId('');
-        } catch (err) {
-            showError(err.response?.data?.message || 'No se pudo actualizar la reservación.');
-        } finally {
-            setSubmitting(false);
         }
     };
 

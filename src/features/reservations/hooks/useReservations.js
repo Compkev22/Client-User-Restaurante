@@ -5,6 +5,7 @@ import {
     getBranches,
     getTableAvailability,
     createReservation,
+    updateReservation,
     getReservations,
     deleteReservation,
 } from '../../../shared/api/client.js';
@@ -78,6 +79,22 @@ export const useReservations = () => {
         }
     };
 
+    const updateReservationById = async (id, payload) => {
+    setSubmitting(true);
+    try {
+        const { data } = await updateReservation(id, payload);
+        showSuccess(data?.message || 'Reservación actualizada.');
+        await refetchReservations();
+        return true;
+    } catch (err) {
+        const msg = err.response?.data?.message || 'No se pudo actualizar la reservación.';
+        showError(msg);
+        return false;
+    } finally {
+        setSubmitting(false);
+    }
+};
+
     // ── Cancelar reservación ──
     const cancelReservation = async (id) => {
         try {
@@ -103,6 +120,7 @@ export const useReservations = () => {
         fetchAvailability,
         clearTables,
         submitReservation,
+        updateReservationById,
         cancelReservation,
     };
 };

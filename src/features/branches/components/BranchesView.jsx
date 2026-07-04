@@ -12,7 +12,7 @@ import { useBranchStore } from '../../auth/store/clientStore.js';
 import BranchesIcon from '../../../assets/icons/Branches.svg';
 
 export const BranchesView = () => {
-    const { branches, loading } = useBranches();
+    const { branches, loading, search, setSearch, category, setCategory, categories } = useBranches();
     const navigate = useNavigate();
 
     // Store persistido para la sucursal seleccionada
@@ -58,12 +58,37 @@ export const BranchesView = () => {
                 </div>
             )}
 
+            {/* Buscador y filtro por categoría */}
+            <div className="flex flex-col sm:flex-row gap-3">
+                <input
+                    type="text"
+                    value={search}
+                    onChange={(e) => setSearch(e.target.value)}
+                    placeholder="Buscar por nombre o dirección..."
+                    className="flex-1 px-4 py-2.5 rounded-xl border border-orange-200 text-sm focus:outline-none focus:ring-2 focus:ring-[#e11d48]/30 bg-white"
+                />
+                <div className="flex gap-2 flex-wrap">
+                    {categories.map((cat) => (
+                        <button
+                            key={cat}
+                            onClick={() => setCategory(cat)}
+                            className={`px-4 py-2.5 rounded-xl text-xs font-black border transition-all ${category === cat
+                                ? 'bg-[#e11d48] text-white border-[#e11d48]'
+                                : 'bg-white text-gray-600 border-orange-200 hover:border-[#e11d48]'
+                                }`}
+                        >
+                            {cat}
+                        </button>
+                    ))}
+                </div>
+            </div>
+
             {/* Grid de sucursales */}
             {branches.length === 0 ? (
                 <EmptyState icon={<img src={BranchesIcon} alt="" className="w-12 h-12 mx-auto opacity-30" />}
                     title="Sin sucursales disponibles"
-                    description="No hay sucursales registradas en este momento."
-                />
+                    description="No hay sucursales que coincidan con tu búsqueda."
+ />
             ) : (
                 <div className="grid grid-cols-1 md:grid-cols-2 gap-6">
                     {branches.map((branch) => (
