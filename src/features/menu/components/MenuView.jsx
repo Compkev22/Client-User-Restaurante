@@ -29,19 +29,26 @@ export const MenuView = () => {
             navigate('/portal/sucursales');
             return;
         }
+
+        const isCombo = item.type === 'Combo';
+        const imgSrc = isCombo
+            ? (item.image?.url || FALLBACK_COMBO)
+            : (item.imagen_url && !item.imagen_url.includes('default-product') ? item.imagen_url : FALLBACK_PRODUCT);
+
         const result = addToCart({
             _id: item._id,
             name: item.name,
             precio: item.price,
             tipo: item.type,
             category: item.category,
+            imagen: imgSrc,
             branchId: selectedBranch._id,
             cantidad: 1,
         });
         if (result?.conflict) {
-            showError('Ya tienes productos de otra sucursal en el carrito. Vacía el carrito primero.');
+            showError('Ya tienes productos de otra sucursal en el carrito. Vacia el carrito primero.');
         } else {
-            showSuccess(`${item.name} agregado al carrito 🛒`);
+            showSuccess(`${item.name} agregado al carrito`);
         }
     };
 
@@ -141,35 +148,45 @@ export const MenuView = () => {
                                     ? item.image.url
                                     : (isCombo ? FALLBACK_COMBO : FALLBACK_PRODUCT);
 
-                            return (
-                                <div
-                                    key={item._id}
-                                    className="bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden hover:shadow-xl transition-all duration-300 flex flex-col group"
-                                >
-                                    {/* Imagen */}
-                                    <div className="relative w-full h-36 overflow-hidden bg-gray-100">
-                                        <img
-                                            src={imgSrc}
-                                            alt={item.name}
-                                            className="w-full h-full object-cover group-hover:scale-110 transition-transform duration-500"
-                                            onError={(e) => { e.target.src = isCombo ? FALLBACK_COMBO : FALLBACK_PRODUCT; }}
-                                        />
-                                        {/* Badge de tipo — moverlo aquí en vez del precio */}
-                                        {isCombo && (
-                                            <div className="absolute top-2 right-2 bg-[#facc15] text-red-900 font-black px-2.5 py-1 rounded-xl shadow text-[10px]">
-                                                COMBO
-                                            </div>
-                                        )}
-                                    </div>
+                        const available = item.inStock !== false;
 
-                                    {/* Contenido */}
-                                    <div className="p-4 flex flex-col flex-1">
-                                        <span className={`text-[10px] font-black uppercase px-2.5 py-1 rounded-full w-fit mb-2 ${isCombo
-                                            ? 'bg-yellow-100 text-yellow-700 border border-yellow-200'
-                                            : 'bg-orange-50 text-[#fb923c] border border-orange-100'
-                                            }`}>
-                                            {item.type} {item.category && `· ${item.category}`}
-                                        </span>
+                        return (
+                            <div
+                                key={item._id}
+                                className={`bg-white rounded-3xl shadow-sm border border-gray-100 overflow-hidden transition-all duration-300 flex flex-col group ${
+                                    available ? 'hover:shadow-xl' : 'opacity-50'
+                                }`}
+                            >
+                                {/* Imagen */}
+                                <div className="relative w-full h-36 overflow-hidden bg-gray-100">
+                                    <img
+                                        src={imgSrc}
+                                        alt={item.name}
+                                        className={`w-full h-full object-cover ${available ? 'group-hover:scale-110 transition-transform duration-500' : ' grayscale'}`}
+                                        onError={(e) => { e.target.src = isCombo ? FALLBACK_COMBO : FALLBACK_PRODUCT; }}
+                                    />
+                                    {isCombo && available && (
+                                        <div className="absolute top-2 right-2 bg-[#facc15] text-red-900 font-black px-2.5 py-1 rounded-xl shadow text-[10px]">
+                                            COMBO
+                                        </div>
+                                    )}
+                                    {!available && (
+                                        <div className="absolute inset-0 bg-black/40 flex items-center justify-center">
+                                            <span className="bg-white/90 text-red-600 font-black text-xs px-4 py-1.5 rounded-full uppercase">
+                                                Sin Stock
+                                            </span>
+                                        </div>
+                                    )}
+                                </div>
+
+                                {/* Contenido */}
+                                <div className="p-4 flex flex-col flex-1">
+                                    <span className={`text-[10px] font-black uppercase px-2.5 py-1 rounded-full w-fit mb-2 ${isCombo
+                                        ? 'bg-yellow-100 text-yellow-700 border border-yellow-200'
+                                        : 'bg-orange-50 text-[#fb923c] border border-orange-100'
+                                        }`}>
+                                        {item.type} {item.category && `\u00B7 ${item.category}`}
+                                    </span>
 
                                         <h3 className="text-base font-black italic uppercase leading-tight mb-1 line-clamp-2 text-gray-800">
                                             {item.name}
@@ -179,25 +196,30 @@ export const MenuView = () => {
                                             <p className="text-xs text-gray-500 mb-2 line-clamp-2">{item.description}</p>
                                         )}
 
-                                        {/* Footer — precio igual para ambos tipos */}
-                                        <div className="flex items-center justify-between mt-auto pt-3 border-t border-gray-50">
-                                            <span className="text-lg font-black text-[#e11d48]">
-                                                Q{item.price?.toFixed(2)}
-                                            </span>
+                                    {/* Footer */}
+                                    <div className="flex items-center justify-between mt-auto pt-3 border-t border-gray-50">
+                                        <span className="text-lg font-black text-[#e11d48]">
+                                            Q{item.price?.toFixed(2)}
+                                        </span>
+                                        {available ? (
                                             <button
                                                 onClick={() => handleAddToCart(item)}
                                                 className="flex items-center gap-1.5 bg-[#e11d48] hover:bg-red-700 text-white text-xs font-black px-3 py-2 rounded-xl transition-all active:scale-95"
                                             >
                                                 <ShoppingCartIcon className="w-3.5 h-3.5" /> Agregar
                                             </button>
-                                        </div>
+                                        ) : (
+                                            <span className="text-[10px] font-black text-gray-400 uppercase px-3 py-2 rounded-xl border border-gray-200">
+                                                No disponible
+                                            </span>
+                                        )}
                                     </div>
                                 </div>
-                            );
-                        })}
-                    </div>
-                )
-            }
-        </div >
+                            </div>
+                        );
+                    })}
+                </div>
+            )}
+        </div>
     );
 };
