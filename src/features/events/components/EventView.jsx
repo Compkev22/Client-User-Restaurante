@@ -2,6 +2,7 @@
 
 import { useState } from 'react';
 import { showError, showSuccess } from '../../../shared/utils/toast.js';
+import { showConfirmToast } from '../../../shared/ui/ConfirmToast.jsx';
 import { Spinner } from '../../../shared/ui/Spinner.jsx';
 import { useEvents } from '../hook/useEvents.js';
 import { EventForm } from './EventForm.jsx';
@@ -10,13 +11,22 @@ import EventsIcon from '../../../assets/icons/Events.svg';
 
 export const EventsView = () => {
     const {
-        eventRequests, 
+        eventRequests,
         additionalServices,
         branches,
         loadingPage,
         submitting,
         submitEvent,
+        cancelRequest,
     } = useEvents();
+
+    const handleCancel = (id) => {
+        showConfirmToast({
+            title: 'Cancelar solicitud',
+            message: '¿Seguro que quieres cancelar esta solicitud de evento?',
+            onConfirm: () => cancelRequest(id),
+        });
+    };
 
     // ── Estado de UI local (inputs controlados del formulario) ──
     const [branchId, setBranchId] = useState('');
@@ -115,7 +125,7 @@ export const EventsView = () => {
                 submitting={submitting}
             />
 
-            <MyEventsList eventRequests={eventRequests} />
+            <MyEventsList eventRequests={eventRequests} onCancel={handleCancel} />
         </div>
     );
 };

@@ -9,10 +9,11 @@ const statusVariant = {
     Pendiente:  'warning',
     Aceptada: 'success',
     Rechazada:  'danger',
+    Cancelada: 'neutral',
     Finalizado: 'neutral',
 };
 
-export const MyEventsList = ({ eventRequests }) => (
+export const MyEventsList = ({ eventRequests, onCancel }) => (
     <div>
         <h2 className="text-xl font-black text-gray-800 mb-4">Mis eventos</h2>
 
@@ -36,10 +37,23 @@ export const MyEventsList = ({ eventRequests }) => (
                                     Mesas asignadas: {ev.tables.map((t) => t.numberTable).join(', ')}
                                 </p>
                             )}
+                            {ev.status === 'Rechazada' && ev.rejectionReason && (
+                                <p className="text-xs text-red-500 italic mt-1">Motivo: {ev.rejectionReason}</p>
+                            )}
                         </div>
-                        <Badge variant={statusVariant[ev.status] || 'neutral'}>
-                            {ev.status}
-                        </Badge>
+                        <div className="flex flex-col items-end gap-2">
+                            <Badge variant={statusVariant[ev.status] || 'neutral'}>
+                                {ev.status}
+                            </Badge>
+                            {ev.status === 'Pendiente' && (
+                                <button
+                                    onClick={() => onCancel(ev._id)}
+                                    className="text-xs font-bold text-red-500 hover:text-red-700 transition-colors"
+                                >
+                                    Cancelar solicitud
+                                </button>
+                            )}
+                        </div>
                     </Card>
                 ))}
             </div>
