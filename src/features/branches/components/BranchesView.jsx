@@ -8,7 +8,8 @@ import { BranchCard } from './BranchCard.jsx';
 import { Spinner } from '../../../shared/ui/Spinner.jsx';
 import { EmptyState } from '../../../shared/ui/EmptyState.jsx';
 import { Button } from '../../../shared/ui/Button.jsx';
-import { useBranchStore } from '../../auth/store/clientStore.js';
+import { useBranchStore, useCartStore } from '../../auth/store/clientStore.js';
+import { showConfirmToast } from '../../../shared/ui/ConfirmToast.jsx';
 import BranchesIcon from '../../../assets/icons/Branches.svg';
 
 export const BranchesView = () => {
@@ -17,9 +18,24 @@ export const BranchesView = () => {
 
     // Store persistido para la sucursal seleccionada
     const { selectedBranch, setSelectedBranch } = useBranchStore();
+    const cart = useCartStore((s) => s.cart);
+    const cartBranchId = useCartStore((s) => s.cartBranchId);
+    const clearCart = useCartStore((s) => s.clearCart);
     const [localSelected, setLocalSelected] = useState(selectedBranch?._id || null);
 
     const handleSelect = (branch) => {
+        if (cart.length > 0 && cartBranchId && cartBranchId !== branch._id) {
+            showConfirmToast({
+                title: 'Cambiar de sucursal',
+                message: 'Tu carrito tiene productos de otra sucursal. Si cambias de sucursal, se vaciará el carrito.',
+                onConfirm: () => {
+                    clearCart();
+                    setLocalSelected(branch._id);
+                    setSelectedBranch(branch);
+                },
+            });
+            return;
+        }
         setLocalSelected(branch._id);
         setSelectedBranch(branch);
     };

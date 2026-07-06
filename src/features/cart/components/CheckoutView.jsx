@@ -3,7 +3,6 @@
 import { useState } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCartStore, useBranchStore, useOrderRequestStore } from '../../auth/store/clientStore.js';
-import { useBranches } from '../../branches/hooks/useBranches.js';
 import { sendInvoice } from '../../../shared/api/client.js';
 
 import { TypeStep } from './TypeStep.jsx';
@@ -31,16 +30,13 @@ export const CheckoutView = () => {
     const getCartTotal = useCartStore((s) => s.getCartTotal);
     const clearCart = useCartStore((s) => s.clearCart);
     const selectedBranch = useBranchStore((s) => s.selectedBranch);
-    const setSelectedBranch = useBranchStore((s) => s.setSelectedBranch);
     const createOrderRequest = useOrderRequestStore((s) => s.createOrderRequest);
-    const { branches, loading: branchesLoading } = useBranches();
 
     const [step, setStep] = useState(STEPS.TYPE);
     const [orderType, setOrderType] = useState(null);
     const [deliveryAddress, setDeliveryAddress] = useState('');
     const [deliveryLat, setDeliveryLat] = useState(null);
     const [deliveryLng, setDeliveryLng] = useState(null);
-    const [pickupBranch, setPickupBranch] = useState(null);
     const [cardNumber, setCardNumber] = useState('');
     const [cardHolder, setCardHolder] = useState('');
     const [cardExpiry, setCardExpiry] = useState('');
@@ -68,9 +64,7 @@ export const CheckoutView = () => {
         setStep(type === 'TAKEAWAY' ? STEPS.PICKUP : STEPS.DELIVERY);
     };
 
-    const handleConfirmPickup = (branch) => {
-        setPickupBranch(branch);
-        setSelectedBranch(branch);
+    const handleConfirmPickup = () => {
         setError('');
         setStep(STEPS.COUPON);
     };
@@ -98,7 +92,7 @@ export const CheckoutView = () => {
         setStep(STEPS.CONFIRMING);
 
         try {
-            const branchId = orderType === 'TAKEAWAY' ? pickupBranch._id : selectedBranch._id;
+            const branchId = selectedBranch._id;
             const items = cart.map((item) => ({
                 ...(item.tipo === 'Combo' ? { comboId: item._id } : { productoId: item._id }),
                 cantidad: item.cantidad,
@@ -136,12 +130,10 @@ export const CheckoutView = () => {
 
     if (step === STEPS.PICKUP) return (
         <PickupStep
-            branches={branches}
-            loading={branchesLoading}
-            selectedBranch={pickupBranch}
-            error={error}
-            onSelect={handleConfirmPickup}
+            selectedBranch={selectedBranch}
+            onConfirm={handleConfirmPickup}
             onBack={() => goBack(STEPS.TYPE)}
+            onBranches={() => navigate('/portal/sucursales')}
         />
     );
 
