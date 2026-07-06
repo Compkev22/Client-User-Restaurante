@@ -40,12 +40,18 @@ export const HomeView = () => {
     }, [selectedBranch?._id]);
 
     const handleAddToCart = (item) => {
+        const imagen = item.type === 'Individual' && item.imagen_url && !item.imagen_url.includes('default-product')
+            ? item.imagen_url
+            : item.type === 'Combo' && item.image?.url
+                ? item.image.url
+                : null;
         const result = addToCart({
             _id: item._id,
             name: item.name,
             precio: item.price,
             tipo: item.type,
             category: item.category,
+            imagen,
             branchId: selectedBranch._id,
             cantidad: 1,
         });

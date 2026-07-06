@@ -3,7 +3,7 @@
 import { Button } from '../../../shared/ui/Button.jsx';
 import { MapPicker } from '../../../shared/ui/MapPicker.jsx';
 
-export const DeliveryStep = ({ address, lat, lng, error, onAddressChange, onLocationChange, onConfirm, onBack }) => {
+export const DeliveryStep = ({ address, savedAddresses = [], lat, lng, error, onAddressChange, onLocationChange, onConfirm, onBack }) => {
     return (
         <div className="max-w-3xl mx-auto px-4 py-10 animate-fadeIn space-y-8">
             <div className="text-center">
@@ -18,6 +18,29 @@ export const DeliveryStep = ({ address, lat, lng, error, onAddressChange, onLoca
             </div>
 
             <div className="bg-white rounded-2xl shadow-sm border border-gray-100 p-6 max-w-xl mx-auto space-y-5">
+                {savedAddresses.length > 0 && (
+                    <div>
+                        <label className="block text-xs font-bold text-[#a16207] uppercase mb-2">
+                            Tus direcciones guardadas
+                        </label>
+                        <div className="flex flex-wrap gap-2">
+                            {savedAddresses.map((addr) => (
+                                <button
+                                    key={addr.addressId}
+                                    type="button"
+                                    onClick={() => onAddressChange(addr.address)}
+                                    className={`px-3 py-1.5 rounded-lg text-xs font-bold border transition-colors ${
+                                        address === addr.address
+                                            ? 'bg-[#e11d48] text-white border-[#e11d48]'
+                                            : 'bg-white text-gray-600 border-orange-200 hover:border-[#e11d48]'
+                                    }`}
+                                >
+                                    {addr.label}{addr.isDefault ? ' ★' : ''}
+                                </button>
+                            ))}
+                        </div>
+                    </div>
+                )}
                 <div>
                     <label className="block text-xs font-bold text-[#a16207] uppercase mb-1">
                         Direccion Completa

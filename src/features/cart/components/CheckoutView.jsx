@@ -1,9 +1,9 @@
 'use strict';
 
-import { useState } from 'react';
+import { useState, useEffect } from 'react';
 import { useNavigate } from 'react-router-dom';
 import { useCartStore, useBranchStore, useOrderRequestStore } from '../../auth/store/clientStore.js';
-import { sendInvoice } from '../../../shared/api/client.js';
+import { sendInvoice, getProfile } from '../../../shared/api/client.js';
 
 import { TypeStep } from './TypeStep.jsx';
 import { PickupStep } from './PickupStep.jsx';
@@ -46,6 +46,15 @@ export const CheckoutView = () => {
     const [appliedCoupon, setAppliedCoupon] = useState(null);
     const [loading, setLoading] = useState(false);
     const [error, setError] = useState('');
+    const [savedAddresses, setSavedAddresses] = useState([]);
+
+    useEffect(() => {
+        if (step === STEPS.DELIVERY) {
+            getProfile()
+                .then(({ data }) => setSavedAddresses(data.user?.addresses || []))
+                .catch(() => setSavedAddresses([]));
+        }
+    }, [step]);
 
     if (cart.length === 0 && step !== STEPS.DONE) {
         navigate('/portal/carrito');
@@ -140,6 +149,7 @@ export const CheckoutView = () => {
     if (step === STEPS.DELIVERY) return (
         <DeliveryStep
             address={deliveryAddress}
+            savedAddresses={savedAddresses}
             lat={deliveryLat}
             lng={deliveryLng}
             error={error}
