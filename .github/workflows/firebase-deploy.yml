@@ -1,0 +1,33 @@
+name: Deploy Client to Firebase Hosting
+
+on:
+  push:
+    branches:
+      - main
+
+jobs:
+  deploy:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+
+      - uses: actions/setup-node@v4
+        with:
+          node-version: '20'
+
+      - name: Install dependencies
+        run: pnpm install   # o npm/yarn, según cómo esté armado este repo
+
+      - name: Build
+        run: pnpm run build
+        env:
+          VITE_AUTH_URL: ${{ secrets.VITE_AUTH_URL }}
+          VITE_USER_API_URL: ${{ secrets.VITE_USER_API_URL }}
+
+      - name: Deploy to Firebase Hosting
+        uses: FirebaseExtended/action-hosting-deploy@v0
+        with:
+          repoToken: ${{ secrets.GITHUB_TOKEN }}
+          firebaseServiceAccount: ${{ secrets.FIREBASE_SERVICE_ACCOUNT }}
+          channelId: live
+          projectId: kinal-fried-chicken-user

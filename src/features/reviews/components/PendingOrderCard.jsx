@@ -5,8 +5,8 @@ import { Badge } from '../../../shared/ui/Badge.jsx';
 import { formatCurrency, formatDateShort } from '../../../shared/utils/formatters.js';
 
 const ORDER_TYPE_LABELS = {
-    DELIVERY: { label: 'A domicilio', icon: '🛵' },
-    TAKEAWAY: { label: 'Para recoger', icon: '🥡' }
+    DELIVERY: { label: 'A domicilio' },
+    TAKEAWAY: { label: 'Para recoger' }
 };
 
 export const PendingOrderCard = ({
@@ -14,14 +14,13 @@ export const PendingOrderCard = ({
     onCreateReview
 }) => {
 
-    const typeInfo = ORDER_TYPE_LABELS[order.orderType] || { label: order.orderType, icon: '📦' };
+    const typeInfo = ORDER_TYPE_LABELS[order.orderType] || { label: order.orderType };
 
     return (
         <div className="bg-white p-5 md:p-6 rounded-3xl shadow-sm border border-orange-100 transition-all hover:shadow-md flex flex-col justify-between">
 
             <div>
                 <div className="flex justify-between items-start mb-3 gap-2">
-                    <span className="text-2xl">{typeInfo.icon}</span>
                     <Badge variant="success">Entregado</Badge>
                 </div>
 
@@ -46,7 +45,7 @@ export const PendingOrderCard = ({
                 className="w-full mt-5"
                 onClick={() => onCreateReview(order)}
             >
-                ★ Dejar reseña
+                Dejar reseña
             </Button>
 
         </div>
